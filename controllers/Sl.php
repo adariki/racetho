@@ -33,9 +33,10 @@ class Sl extends CI_Controller {
 			$dataOptions[$value['codesgl']] = $value['namasgl'];
 		}
 		$field = $this->db->field_data('g003');
-		$form[] = ['type'=>'text',
+		$form[] = ['type'=>'select',
 							'name'=>'codesgl',
-							'value'=>$val['codesgl'],
+							'value'=>'',
+							'options'=>$dataOptions,
 							'pk'=>0];
 							$form[] = ['type'=>'text',
 							'name'=>'codesl',
@@ -60,9 +61,10 @@ class Sl extends CI_Controller {
 			$dataOptions[$value['codesgl']] = $value['namasgl'];
 		}
 		$field = $this->db->field_data('g003');
-		$form[] = ['type'=>'text',
+		$form[] = ['type'=>'select',
 							'name'=>'codesgl',
 							'value'=>$val['codesgl'],
+							'options'=>$dataOptions,
 							'pk'=>0];
 							$form[] = ['type'=>'text',
 							'name'=>'codesl',
