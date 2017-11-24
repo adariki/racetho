@@ -60,7 +60,7 @@ class JenisUmum extends CI_Controller {
 
 		}*/
 			$form[] = ['type'=>'text','name'=>'KODE_JU','value'=>$valAI,'pk'=>1];
-			$form[] = ['type'=>'number','name'=>'KETERANGAN','value'=>'','pk'=>0];
+			$form[] = ['type'=>'text','name'=>'KETERANGAN','value'=>'','pk'=>0];
 			$form[] = ['type'=>'select','name'=>'SGL_SEDIA','options'=>$comboSl,'pk'=>0];
 			$form[] = ['type'=>'select','name'=>'SGL_PDPT','options'=>$comboSl,'pk'=>0];
 			$form[] = ['type'=>'select','name'=>'SGL_DISJUAL','options'=>$comboSl,'pk'=>0];
