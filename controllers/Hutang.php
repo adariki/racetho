@@ -18,6 +18,7 @@ class Hutang extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+	public $label = ['Kode','Nama Hutang','GL Utang','GL Biaya'];
 	public function index()
 	{
 		$this->load->view('index',['title'=>'Hutang']);
@@ -26,13 +27,18 @@ class Hutang extends CI_Controller {
 	public function add()
 	{
 		$form = [];
+
 		$field = $this->db->field_data('h001');
 		$valAI = $this->autoInc();
+		$dataOptionsQuery = $this->db->select('codesl,namasl')->get('G003')->result_array();
+		foreach ($dataOptionsQuery as $key => $value) {
+			$dataOptions[$value['codesl']]=$value['namasl'];
+		}
 		
-			$form[] = ['type'=>'text','name'=>'Kode_hutang','value'=>$valAI,'pk'=>1];
-			$form[] = ['type'=>'text','name'=>'Nama_hutang','value'=>''];
-			$form[] = ['type'=>'text','name'=>'SGL_HUTANG','value'=>''];
-			$form[] = ['type'=>'text','name'=>'SGL_BIAYA','value'=>''];
+			$form[] = ['type'=>'text','name'=>'Kode_hutang','value'=>$valAI,'pk'=>1,'label'=>$this->label[0]];
+			$form[] = ['type'=>'text','name'=>'Nama_hutang','value'=>'','label'=>$this->label[1]];
+			$form[] = ['type'=>'select','name'=>'SGL_HUTANG','value'=>'','label'=>$this->label[2],'options'=>$dataOptions];
+			$form[] = ['type'=>'select','name'=>'SGL_BIAYA','value'=>'','label'=>$this->label[3],'options'=>$dataOptions];
 		
 			$this->load->view('index',['title'=>'Tambah Hutang','field'=>$form]);
 	}
@@ -42,11 +48,14 @@ class Hutang extends CI_Controller {
 		$val = (array) $this->db->get_where('h001',['kode_hutang'=>$id])->row();
 		$form = [];
 		$field = $this->db->field_data('h001');
-		
-		$form[] = ['type'=>'text','name'=>'Kode_hutang','value'=>$val['Kode_hutang'],'pk'=>1];
-			$form[] = ['type'=>'text','name'=>'Nama_hutang','value'=>$val['Nama_hutang']];
-			$form[] = ['type'=>'text','name'=>'SGL_HUTANG','value'=>$val['SGL_HUTANG']];
-			$form[] = ['type'=>'text','name'=>'SGL_BIAYA','value'=>$val['SGL_BIAYA']];
+		$dataOptionsQuery = $this->db->select('codesl,namasl')->get('G003')->result_array();
+		foreach ($dataOptionsQuery as $key => $value) {
+			$dataOptions[$value['codesl']]=$value['namasl'];
+		}
+		$form[] = ['type'=>'text','name'=>'Kode_hutang','value'=>$val['Kode_hutang'],'pk'=>1,'label'=>$this->label[0]];
+			$form[] = ['type'=>'text','name'=>'Nama_hutang','value'=>$val['Nama_hutang'],'label'=>$this->label[1]];
+			$form[] = ['type'=>'select','name'=>'SGL_HUTANG','value'=>$val['SGL_HUTANG'],'label'=>$this->label[2],'options'=>$dataOptions];
+			$form[] = ['type'=>'select','name'=>'SGL_BIAYA','value'=>$val['SGL_BIAYA'],'label'=>$this->label[3],'options'=>$dataOptions];
 			$this->load->view('index',['title'=>'Edit Hutang','field'=>$form]);
 		
 	}

@@ -33,15 +33,16 @@ class Bank extends CI_Controller {
 			$dataOptions[$value['codesl']] = $value['namasl'];
 		}
 		$field = $this->db->field_data('C006');
+		$label = ['No Rekening','Nama Bank','Nama Rekening','GL Bank'];
 		/*echo '<pre>';
 		print_r($dataOptions);die();*/
 		foreach ($field as $key => $value) {
 			if($value->type=='nvarchar' && $value->name!=$fk){
-				$form[] = ['type'=>'text','name'=>$value->name,'value'=>'','pk'=>0];
+				$form[] = ['type'=>'text','name'=>$value->name,'value'=>'','pk'=>0,'label'=>$label[$key]];
 			}else if($value->type!='varchar' && $value->name!=$fk){
-				$form[] = ['type'=>'number','name'=>$value->name,'value'=>'','pk'=>0];
+				$form[] = ['type'=>'number','name'=>$value->name,'value'=>'','pk'=>0,'label'=>$label[$key]];
 			}else if($value->name==$fk){
-				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions];
+				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions,'label'=>$label[$key]];
 			}
 
 		}
@@ -54,6 +55,7 @@ class Bank extends CI_Controller {
 		$val = (array) $this->db->get_where('C006',['NoRek'=>$id])->row();
 		$form = [];
 		$fk = "SGL";
+		$label = ['No Rekening','Nama Bank','Nama Rekening','GL Bank'];
 		$dataOptionsQuery = $this->db->select('codesl,namasl')
 									 ->get('G003')->result_array();
 		foreach ($dataOptionsQuery as $key => $value) {
@@ -65,14 +67,14 @@ class Bank extends CI_Controller {
 				$form[] = ['type'=>'text',
 							'name'=>$value->name,
 							'value'=>$val[$value->name],
-							'pk'=>$value->primary_key];
+							'pk'=>$value->primary_key,'label'=>$label[$key]];
 			}else if($value->type!='nvarchar' && $value->name!=$fk){
 				$form[] = ['type'=>'number'
 							,'name'=>$value->name,
 							'value'=>$val[$value->name],
-							'pk'=>$value->primary_key];
+							'pk'=>$value->primary_key,'label'=>$label[$key]];
 			}else if($value->name==$fk){
-				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions,'value'=>$val[$value->name]];
+				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions,'value'=>$val[$value->name],'label'=>$label[$key]];
 			}
 		}
 			$this->load->view('index',['title'=>'Edit Bank','field'=>$form]);

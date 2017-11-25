@@ -18,6 +18,7 @@ class Piutang extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+	public $label = ['Kode','Nama Piutang','GL Piutang','GL Pendapatan'];
 	public function index()
 	{
 		$this->load->view('index',['title'=>'Piutang']);
@@ -29,10 +30,10 @@ class Piutang extends CI_Controller {
 		$field = $this->db->field_data('p001');
 		$valAI = $this->autoInc();
 		
-			$form[] = ['type'=>'text','name'=>'KODE_PIN','value'=>$valAI,'pk'=>1];
-			$form[] = ['type'=>'text','name'=>'NAMA_PIN','value'=>''];
-			$form[] = ['type'=>'text','name'=>'SGL_PIN','value'=>''];
-			$form[] = ['type'=>'text','name'=>'SGL_PDPT','value'=>''];
+			$form[] = ['type'=>'text','name'=>'KODE_PIN','value'=>$valAI,'pk'=>1,'label'=>$this->label[0]];
+			$form[] = ['type'=>'text','name'=>'NAMA_PIN','value'=>'','label'=>$this->label[1]];
+			$form[] = ['type'=>'text','name'=>'SGL_PIN','value'=>'','label'=>$this->label[2]];
+			$form[] = ['type'=>'text','name'=>'SGL_PDPT','value'=>'','label'=>$this->label[3]];
 		
 			$this->load->view('index',['title'=>'Tambah Piutang','field'=>$form]);
 	}
@@ -42,10 +43,10 @@ class Piutang extends CI_Controller {
 		$val = (array) $this->db->get_where('p001',['KODE_PIN'=>$id])->row();
 		$form = [];
 		$field = $this->db->field_data('p001');
-		$form[] = ['type'=>'text','name'=>'KODE_PIN','value'=>$val['KODE_PIN'],'pk'=>1];
-			$form[] = ['type'=>'text','name'=>'NAMA_PIN','value'=>$val['NAMA_PIN']];
-			$form[] = ['type'=>'text','name'=>'SGL_PIN','value'=>$val['SGL_PIN']];
-			$form[] = ['type'=>'text','name'=>'SGL_PDPT','value'=>$val['SGL_PDPT']];
+		$form[] = ['type'=>'text','name'=>'KODE_PIN','value'=>$val['KODE_PIN'],'pk'=>1,'label'=>$this->label[0]];
+			$form[] = ['type'=>'text','name'=>'NAMA_PIN','value'=>$val['NAMA_PIN'],'label'=>$this->label[1]];
+			$form[] = ['type'=>'text','name'=>'SGL_PIN','value'=>$val['SGL_PIN'],'label'=>$this->label[2]];
+			$form[] = ['type'=>'text','name'=>'SGL_PDPT','value'=>$val['SGL_PDPT'],'label'=>$this->label[3]];
 			$this->load->view('index',['title'=>'Edit Piutang','field'=>$form]);
 		
 	}

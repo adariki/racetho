@@ -18,6 +18,7 @@ class Customer extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+	public $label = ['Kode','Nama Customer','Alamat','Kota','Telepon','Kontak','HP','Fax'];
 	public function index()
 	{
 		$this->load->view('index',['title'=>'Customer']);
@@ -35,14 +36,14 @@ class Customer extends CI_Controller {
 				$form[] = ['type'=>'number','name'=>$value->name,'value'=>''];
 			}
 		}*/
-			$form[] = ['type'=>'text','name'=>'KODE_CST','value'=>$valAI,"pk"=>1];
-			$form[] = ['type'=>'text','name'=>'NAMA_CST','value'=>''];
-			$form[] = ['type'=>'text','name'=>'Alamat','value'=>''];
-			$form[] = ['type'=>'text','name'=>'Kota','value'=>''];
-			$form[] = ['type'=>'text','name'=>'Telpon','value'=>''];
-			$form[] = ['type'=>'text','name'=>'Kontak','value'=>''];
-			$form[] = ['type'=>'text','name'=>'NoHp','value'=>''];
-			$form[] = ['type'=>'text','name'=>'NoFax','value'=>''];
+			$form[] = ['type'=>'text','name'=>'KODE_CST','value'=>$valAI,"pk"=>1,'label'=>$this->label[0]];
+			$form[] = ['type'=>'text','name'=>'NAMA_CST','value'=>'','label'=>$this->label[1]];
+			$form[] = ['type'=>'text','name'=>'Alamat','value'=>'','label'=>$this->label[2]];
+			$form[] = ['type'=>'text','name'=>'Kota','value'=>'','label'=>$this->label[3]];
+			$form[] = ['type'=>'text','name'=>'Telpon','value'=>'','label'=>$this->label[4]];
+			$form[] = ['type'=>'text','name'=>'Kontak','value'=>'','label'=>$this->label[5]];
+			$form[] = ['type'=>'text','name'=>'NoHp','value'=>'','label'=>$this->label[6]];
+			$form[] = ['type'=>'text','name'=>'NoFax','value'=>'','label'=>$this->label[7]];
 		
 			$this->load->view('index',['title'=>'Tambah Customer','field'=>$form]);
 	}
@@ -52,14 +53,14 @@ class Customer extends CI_Controller {
 		$val = (array) $this->db->get_where('c012',['KODE_CST'=>$id])->row();
 		$form = [];
 		$field = $this->db->field_data('c012');
-			$form[] = ['type'=>'text','name'=>'KODE_CST','value'=>$val['KODE_CST'],"pk"=>1];
-			$form[] = ['type'=>'text','name'=>'NAMA_CST','value'=>$val['NAMA_CST']];
-			$form[] = ['type'=>'text','name'=>'Alamat','value'=>$val['Alamat']];
-			$form[] = ['type'=>'text','name'=>'Kota','value'=>$val['Kota']];
-			$form[] = ['type'=>'text','name'=>'Telpon','value'=>$val['Telpon']];
-			$form[] = ['type'=>'text','name'=>'Kontak','value'=>$val['Kontak']];
-			$form[] = ['type'=>'text','name'=>'NoHp','value'=>$val['NoHp']];
-			$form[] = ['type'=>'text','name'=>'NoFax','value'=>$val['NoFax']];
+			$form[] = ['type'=>'text','name'=>'KODE_CST','value'=>$val['KODE_CST'],"pk"=>1,'label'=>$this->label[0]];
+			$form[] = ['type'=>'text','name'=>'NAMA_CST','value'=>$val['NAMA_CST'],'label'=>$this->label[1]];
+			$form[] = ['type'=>'text','name'=>'Alamat','value'=>$val['Alamat'],'label'=>$this->label[2]];
+			$form[] = ['type'=>'text','name'=>'Kota','value'=>$val['Kota'],'label'=>$this->label[3]];
+			$form[] = ['type'=>'text','name'=>'Telpon','value'=>$val['Telpon'],'label'=>$this->label[4]];
+			$form[] = ['type'=>'text','name'=>'Kontak','value'=>$val['Kontak'],'label'=>$this->label[5]];
+			$form[] = ['type'=>'text','name'=>'NoHp','value'=>$val['NoHp'],'label'=>$this->label[6]];
+			$form[] = ['type'=>'text','name'=>'NoFax','value'=>$val['NoFax'],'label'=>$this->label[7]];
 			$this->load->view('index',['title'=>'Edit Customer','field'=>$form]);
 		
 	}

@@ -18,6 +18,7 @@ class Gl extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+	public $label = ['Kode','Nama','Balance','Posisi','Jurnal Db/Cr'];
 	public function index()
 	{
 		$this->load->view('index',['title'=>'General Ledger']);
@@ -28,20 +29,23 @@ class Gl extends CI_Controller {
 		$form = [];
 		$fk = "dbcr";
 		$fk2 = "Balance";
+		$fk3 = "posisi";
 		$field = $this->db->field_data('g001');
-		$dataOptions['D'] = 'DEBET';
-		$dataOptions['C'] = 'KREDIT';
-		$dataOptions2['NERACA'] = 'NERACA';
-		$dataOptions2['LABA RUGI'] = 'LABA RUGI';
+		$dataOptions = ['D'=>'DEBET','C'=>'KREDIT'];
+		$dataOptions2 = ['NERACA'=>'NERACA','LABA RUGI'=>'LABA RUGI'];
+		$dataOptions3 = ['ASET'=>'ASET','BIAYA'=>'BIAYA','KEWAJIBAN'=>'KEWAJIBAN','MODAL'=>'MODAL','PENDAPATAN'=>'PENDAPATAN'];
 		foreach ($field as $key => $value) {
-			if($value->type=='nvarchar' && $value->name!=$fk && $value->name!=$fk2){
-				$form[] = ['type'=>'text','name'=>$value->name,'value'=>''];
-			}else if($value->type!='nvarchar' && $value->name!=$fk && $value->name!=$fk2){
-				$form[] = ['type'=>'number','name'=>$value->name,'value'=>''];
+			if($value->type=='nvarchar' && $value->name!=$fk && $value->name!=$fk2 && $value->name!=$fk3){
+				$form[] = ['type'=>'text','name'=>$value->name,'value'=>'','label'=>$this->label[$key]];
+			}else if($value->type!='nvarchar' && $value->name!=$fk && $value->name!=$fk2 && $value->name!=$fk3){
+				$form[] = ['type'=>'number','name'=>$value->name,'value'=>'','label'=>$this->label[$key]];
 			}else if($value->name==$fk){
-				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions];
+				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions,'label'=>$this->label[$key]];
 			}else if($value->name==$fk2){
-				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions2];
+				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions2,'label'=>$this->label[$key]];
+			}
+			else if($value->name==$fk3){
+				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions3,'label'=>$this->label[$key]];
 			}
 		}
 		
@@ -54,20 +58,23 @@ class Gl extends CI_Controller {
 		$form = [];
 		$fk = "dbcr";
 		$fk2 = "Balance";
+		$fk3 = "posisi";
 		$field = $this->db->field_data('G001');
-		$dataOptions['D'] = 'DEBET';
-		$dataOptions['C'] = 'KREDIT';
-		$dataOptions2['NERACA'] = 'NERACA';
-		$dataOptions2['LABA RUGI'] = 'LABA RUGI';
+		$dataOptions = ['D'=>'DEBET','C'=>'KREDIT'];
+		$dataOptions2 = ['NERACA'=>'NERACA','LABA RUGI'=>'LABA RUGI'];
+		$dataOptions3 = ['ASET'=>'ASET','BIAYA'=>'BIAYA','KEWAJIBAN'=>'KEWAJIBAN','MODAL'=>'MODAL','PENDAPATAN'=>'PENDAPATAN'];
 		foreach ($field as $key => $value) {
 			if($value->type=='nvarchar' && $value->name!=$fk && $value->name!=$fk2){
-				$form[] = ['type'=>'text','name'=>$value->name,'value'=>$val[$value->name]];
+				$form[] = ['type'=>'text','name'=>$value->name,'value'=>$val[$value->name],'label'=>$this->label[$key]];
 			}else if($value->type!='nvarchar' && $value->name!=$fk && $value->name!=$fk2){
-				$form[] = ['type'=>'number','name'=>$value->name,'value'=>$val[$value->name]];
+				$form[] = ['type'=>'number','name'=>$value->name,'value'=>$val[$value->name],'label'=>$this->label[$key]];
 			}else if($value->name==$fk){
-				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions,'value'=>$val[$value->name]];
+				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions,'value'=>$val[$value->name],'label'=>$this->label[$key]];
 			}else if($value->name==$fk2){
-				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions2,'value'=>$val[$value->name]];
+				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions2,'value'=>$val[$value->name],'label'=>$this->label[$key]];
+			}
+			else if($value->name==$fk3){
+				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions3,'value'=>$val[$value->name],'label'=>$this->label[$key]];
 			}
 		}
 			$this->load->view('index',['title'=>'Edit General Ledger','field'=>$form]);

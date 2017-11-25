@@ -18,6 +18,7 @@ class SubJenis extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+	public $label = ['Kode','Keterangan'];
 	public function index()
 	{
 		$this->load->view('index',['title'=>'Sub Jenis']);
@@ -32,8 +33,8 @@ class SubJenis extends CI_Controller {
 		print_r($dataOptions);die();*/
 		$valAI = $this->autoInc();
 		
-		$form[] = ['type'=>'text','name'=>'KODE_SJ','value'=>$valAI,'pk'=>1];
-		$form[] = ['type'=>'text','name'=>'KETERANGAN','value'=>'','pk'=>0];
+		$form[] = ['type'=>'text','name'=>'KODE_SJ','value'=>$valAI,'pk'=>1,'label'=>$this->label[0]];
+		$form[] = ['type'=>'text','name'=>'KETERANGAN','value'=>'','pk'=>0,'label'=>$this->label[1]];
 		
 			$this->load->view('index',['title'=>'Tambah Sub Jenis','field'=>$form]);
 	}
@@ -45,8 +46,8 @@ class SubJenis extends CI_Controller {
 		$fk = "";
 		
 		$field = $this->db->field_data('B001A');
-		$form[] = ['type'=>'text','name'=>'KODE_SJ','value'=>$val['KODE_SJ'],'pk'=>1];
-		$form[] = ['type'=>'text','name'=>'KETERANGAN','value'=>$val['KETERANGAN'],'pk'=>0];
+		$form[] = ['type'=>'text','name'=>'KODE_SJ','value'=>$val['KODE_SJ'],'pk'=>1,'label'=>$this->label[0]];
+		$form[] = ['type'=>'text','name'=>'KETERANGAN','value'=>$val['KETERANGAN'],'pk'=>0,'label'=>$this->label[1]];
 			$this->load->view('index',['title'=>'Edit Sub Jenis','field'=>$form]);
 		
 	}

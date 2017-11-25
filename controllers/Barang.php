@@ -18,6 +18,7 @@ class Barang extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+	public $label = ['Barcode','Nama Barang','Jenis Umum','Sub Jenis','Ukuran','Supplier','Jenis','Harga Jual(Offline)','Harga Jual(Online)'];
 	public function index()
 	{
 		$this->load->view('index',['title'=>'Barang']);
@@ -50,19 +51,25 @@ class Barang extends CI_Controller {
 		foreach ($dataOptionsQuery4 as $key4 => $value4) {
 			$dataOptions4[$value4['KODE_SPL']] = $value4['NAMA_SPL'];
 		}
+		$dataOptionsQuery5 = $this->db->select('KODE_JNS,KETERANGAN')
+									 ->get('B001C')->result_array();
+		foreach ($dataOptionsQuery5 as $key5 => $value5) {
+			$dataOptions5[$value5['KODE_JNS']] = $value5['KETERANGAN'];
+		}
 
 		$field = $this->db->select('KODE_JU,KODE_SJ,KODE_SPL,KODE_SZ,KODE_BARCODE
       ,NAMA_JNS,HJUAL_PCS,HJUAL_PCS_1')->get('B003')->field_data();
 		/*echo '<pre>';
 		print_r($dataOptions);die();*/
-			$form[]=['type'=>'text','name'=>'KODE_BARCODE'];
-			$form[]=['type'=>'text','name'=>'NAMA_JNS'];
-			$form[]=['type'=>'select','name'=>'KODE_JU','options'=>$dataOptions];
-			$form[]=['type'=>'select','name'=>'KODE_SJ','options'=>$dataOptions2];
-			$form[]=['type'=>'select','name'=>'KODE_SZ','options'=>$dataOptions3];
-			$form[]=['type'=>'select','name'=>'KODE_SPL','options'=>$dataOptions4];
-			$form[]=['type'=>'number','name'=>'HJUAL_PCS'];
-			$form[]=['type'=>'number','name'=>'HJUAL_PCS_1'];
+			$form[]=['type'=>'text','name'=>'KODE_BARCODE','label'=>$this->label[0]];
+			$form[]=['type'=>'text','name'=>'NAMA_JNS','label'=>$this->label[1]];
+			$form[]=['type'=>'select','name'=>'KODE_JU','options'=>$dataOptions,'label'=>$this->label[2]];
+			$form[]=['type'=>'select','name'=>'KODE_SJ','options'=>$dataOptions2,'label'=>$this->label[3]];
+			$form[]=['type'=>'select','name'=>'KODE_SZ','options'=>$dataOptions3,'label'=>$this->label[4]];
+			$form[]=['type'=>'select','name'=>'KODE_SPL','options'=>$dataOptions4,'label'=>$this->label[5]];
+			$form[]=['type'=>'select','name'=>'KODE_JNS','options'=>$dataOptions5,'label'=>$this->label[6]];
+			$form[]=['type'=>'number','name'=>'HJUAL_PCS','label'=>$this->label[7]];
+			$form[]=['type'=>'number','name'=>'HJUAL_PCS_1','label'=>$this->label[8]];
 		
 			$this->load->view('index',['title'=>'Tambah Barang','field'=>$form]);
 	}
@@ -123,15 +130,15 @@ class Barang extends CI_Controller {
 				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions4,'value'=>$val[$value->name]];
 			}
 		}*/
-			$form[]=['type'=>'text','name'=>'KODE_BARCODE','value'=>$val['KODE_BARCODE'],'pk'=>1];
-			$form[]=['type'=>'text','name'=>'NAMA_JNS','value'=>$val['NAMA_JNS']];
-			$form[]=['type'=>'select','name'=>'KODE_JU','options'=>$dataOptions,'value'=>$val['KODE_JU']];
-			$form[]=['type'=>'select','name'=>'KODE_SJ','options'=>$dataOptions2,'value'=>$val['KODE_SJ']];
-			$form[]=['type'=>'select','name'=>'KODE_SZ','options'=>$dataOptions3,'value'=>$val['KODE_SZ']];
-			$form[]=['type'=>'select','name'=>'KODE_SPL','options'=>$dataOptions4,'value'=>$val['KODE_SPL']];
-			$form[]=['type'=>'select','name'=>'KODE_JNS','options'=>$dataOptions5,'value'=>$val['KODE_JNS']];
-			$form[]=['type'=>'number','name'=>'HJUAL_PCS','value'=>$val['HJUAL_PCS']];
-			$form[]=['type'=>'number','name'=>'HJUAL_PCS_1','value'=>$val['HJUAL_PCS_1']];
+			$form[]=['type'=>'text','name'=>'KODE_BARCODE','value'=>$val['KODE_BARCODE'],'pk'=>1,'label'=>$this->label[0]];
+			$form[]=['type'=>'text','name'=>'NAMA_JNS','value'=>$val['NAMA_JNS'],'label'=>$this->label[1]];
+			$form[]=['type'=>'select','name'=>'KODE_JU','options'=>$dataOptions,'value'=>$val['KODE_JU'],'label'=>$this->label[2]];
+			$form[]=['type'=>'select','name'=>'KODE_SJ','options'=>$dataOptions2,'value'=>$val['KODE_SJ'],'label'=>$this->label[3]];
+			$form[]=['type'=>'select','name'=>'KODE_SZ','options'=>$dataOptions3,'value'=>$val['KODE_SZ'],'label'=>$this->label[4]];
+			$form[]=['type'=>'select','name'=>'KODE_SPL','options'=>$dataOptions4,'value'=>$val['KODE_SPL'],'label'=>$this->label[5]];
+			$form[]=['type'=>'select','name'=>'KODE_JNS','options'=>$dataOptions5,'value'=>$val['KODE_JNS'],'label'=>$this->label[6]];
+			$form[]=['type'=>'number','name'=>'HJUAL_PCS','value'=>$val['HJUAL_PCS'],'label'=>$this->label[7]];
+			$form[]=['type'=>'number','name'=>'HJUAL_PCS_1','value'=>$val['HJUAL_PCS_1'],'label'=>$this->label[8]];
 
 			$this->load->view('index',['title'=>'Edit Barang','field'=>$form]);
 		
@@ -174,6 +181,11 @@ class Barang extends CI_Controller {
 											 ->get('C007')->result_array();
 				foreach ($dataOptionsQuery4 as $key4 => $value4) {
 					$dataOptions4[$value4['KODE_SPL']] = $value4['NAMA_SPL'];
+				}
+				$dataOptionsQuery5 = $this->db->select('KODE_JNS,KETERANGAN')
+									 ->get('B001C')->result_array();
+				foreach ($dataOptionsQuery5 as $key5 => $value5) {
+					$dataOptions5[$value5['KODE_JNS']] = $value5['KETERANGAN'];
 				}
 
 				$columns = array('KODE_JU'
@@ -231,7 +243,7 @@ class Barang extends CI_Controller {
 				$nestedData[] = $dataOptions2[$row["KODE_SJ"]];
 				$nestedData[] = $dataOptions4[$row["KODE_SPL"]];
 				$nestedData[] = $dataOptions3[$row["KODE_SZ"]];
-				$nestedData[] = $row["KODE_JNS"];
+				$nestedData[] = $dataOptions5[$row["KODE_JNS"]];
 				$nestedData[] = $row["KODE_BARCODE"];
 				$nestedData[] = $row["NAMA_JNS"];
 				$nestedData[] = $row["HJUAL_PCS"];

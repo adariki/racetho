@@ -18,6 +18,14 @@ class JenisUmum extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+	public $label = ['Kode'
+      ,'Keterangan'
+      ,'GL Persediaan'
+      ,'GL Pendapatan'
+      ,'GL Diskon Jual'
+      ,'GL Pembelian'
+      ,'GL HPP'
+      ,'GL Return'];
 	public function index()
 	{
 		$this->load->view('index',['title'=>'Jenis Umum']);
@@ -59,14 +67,14 @@ class JenisUmum extends CI_Controller {
 			}
 
 		}*/
-			$form[] = ['type'=>'text','name'=>'KODE_JU','value'=>$valAI,'pk'=>1];
-			$form[] = ['type'=>'text','name'=>'KETERANGAN','value'=>'','pk'=>0];
-			$form[] = ['type'=>'select','name'=>'SGL_SEDIA','options'=>$comboSl,'pk'=>0];
-			$form[] = ['type'=>'select','name'=>'SGL_PDPT','options'=>$comboSl,'pk'=>0];
-			$form[] = ['type'=>'select','name'=>'SGL_DISJUAL','options'=>$comboSl,'pk'=>0];
-			$form[] = ['type'=>'select','name'=>'SGL_PEMBELIAN','options'=>$comboSl,'pk'=>0];
-			$form[] = ['type'=>'select','name'=>'SGL_HPP','options'=>$comboSl,'pk'=>0];
-			$form[] = ['type'=>'select','name'=>'SGL_RETURNJUAL','options'=>$comboSl,'pk'=>0];
+			$form[] = ['type'=>'text','name'=>'KODE_JU','value'=>$valAI,'pk'=>1,'label'=>$this->label[0]];
+			$form[] = ['type'=>'text','name'=>'KETERANGAN','value'=>'','pk'=>0,'label'=>$this->label[1]];
+			$form[] = ['type'=>'select','name'=>'SGL_SEDIA','options'=>$comboSl,'pk'=>0,'label'=>$this->label[2]];
+			$form[] = ['type'=>'select','name'=>'SGL_PDPT','options'=>$comboSl,'pk'=>0,'label'=>$this->label[3]];
+			$form[] = ['type'=>'select','name'=>'SGL_DISJUAL','options'=>$comboSl,'pk'=>0,'label'=>$this->label[4]];
+			$form[] = ['type'=>'select','name'=>'SGL_PEMBELIAN','options'=>$comboSl,'pk'=>0,'label'=>$this->label[5]];
+			$form[] = ['type'=>'select','name'=>'SGL_HPP','options'=>$comboSl,'pk'=>0,'label'=>$this->label[6]];
+			$form[] = ['type'=>'select','name'=>'SGL_RETURNJUAL','options'=>$comboSl,'pk'=>0,'label'=>$this->label[7]];
 			$this->load->view('index',['title'=>'Tambah Jenis Umum','field'=>$form]);
 	}
 
@@ -97,14 +105,14 @@ class JenisUmum extends CI_Controller {
 				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions,'value'=>$val[$value->name]];
 			}
 		}*/
-		$form[] = ['type'=>'text','name'=>'KODE_JU','value'=>$val['KODE_JU'],'pk'=>1];
-			$form[] = ['type'=>'text','name'=>'KETERANGAN','value'=>$val['KETERANGAN'],'pk'=>0];
-			$form[] = ['type'=>'select','name'=>'SGL_SEDIA','options'=>$comboSl,'pk'=>0,'value'=>$val['SGL_SEDIA']];
-			$form[] = ['type'=>'select','name'=>'SGL_PDPT','options'=>$comboSl,'pk'=>0,'value'=>$val['SGL_PDPT']];
-			$form[] = ['type'=>'select','name'=>'SGL_DISJUAL','options'=>$comboSl,'pk'=>0,'value'=>$val['SGL_DISJUAL']];
-			$form[] = ['type'=>'select','name'=>'SGL_PEMBELIAN','options'=>$comboSl,'pk'=>0,'value'=>$val['SGL_PEMBELIAN']];
-			$form[] = ['type'=>'select','name'=>'SGL_HPP','options'=>$comboSl,'pk'=>0,'value'=>$val['SGL_HPP']];
-			$form[] = ['type'=>'select','name'=>'SGL_RETURNJUAL','options'=>$comboSl,'pk'=>0,'value'=>$val['SGL_RETURNJUAL']];
+		$form[] = ['type'=>'text','name'=>'KODE_JU','value'=>$val['KODE_JU'],'pk'=>1,'label'=>$this->label[0]];
+			$form[] = ['type'=>'text','name'=>'KETERANGAN','value'=>$val['KETERANGAN'],'pk'=>0,'label'=>$this->label[1]];
+			$form[] = ['type'=>'select','name'=>'SGL_SEDIA','options'=>$comboSl,'pk'=>0,'value'=>$val['SGL_SEDIA'],'label'=>$this->label[2]];
+			$form[] = ['type'=>'select','name'=>'SGL_PDPT','options'=>$comboSl,'pk'=>0,'value'=>$val['SGL_PDPT'],'label'=>$this->label[3]];
+			$form[] = ['type'=>'select','name'=>'SGL_DISJUAL','options'=>$comboSl,'pk'=>0,'value'=>$val['SGL_DISJUAL'],'label'=>$this->label[4]];
+			$form[] = ['type'=>'select','name'=>'SGL_PEMBELIAN','options'=>$comboSl,'pk'=>0,'value'=>$val['SGL_PEMBELIAN'],'label'=>$this->label[5]];
+			$form[] = ['type'=>'select','name'=>'SGL_HPP','options'=>$comboSl,'pk'=>0,'value'=>$val['SGL_HPP'],'label'=>$this->label[6]];
+			$form[] = ['type'=>'select','name'=>'SGL_RETURNJUAL','options'=>$comboSl,'pk'=>0,'value'=>$val['SGL_RETURNJUAL'],'label'=>$this->label[7]];
 			$this->load->view('index',['title'=>'Edit Jenis Umum','field'=>$form]);
 		
 	}
