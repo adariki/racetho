@@ -193,14 +193,14 @@
                 <?php foreach($field as $key=>$value){
                   if($value['type']!='select'){?>
                 <div class="form-group">
-                  <label for="<?= $value['name']?>"><?= $value['name']?></label>
-                  <input type="<?= $value['type']?>" class="form-control" id="<?= $value['name']?>" name="<?= $value['name']?>" value="<?= $value['value']?>" placeholder="Enter <?= $value['name']?>" <?php if($value['pk']==1) echo "readonly";?>>
+                  <label for="<?= $value['name']?>"><?= $value['label']?></label>
+                  <input type="<?= $value['type']?>" class="form-control" id="<?= $value['name']?>" name="<?= $value['name']?>" value="<?= $value['value']?>" placeholder="Enter <?= $value['label']?>" <?php if($value['pk']==1) echo "readonly";?>>
                 </div>
                 <?php } else {?>
                 <div class="form-group">
-                  <label for="<?= $value['name']?>"><?= $value['name']?></label>
+                  <label for="<?= $value['name']?>"><?= $value['label']?></label>
                   <select class="form-control" id="<?= $value['name']?>" name="<?= $value['name']?>" value="<?= $value['value']?>" required>
-                  <option>Silakan Pilih <?= $value['name']?></option>
+                  <option>Silakan Pilih <?= $value['label']?></option>
                   <?php foreach($value['options'] as $key2=>$value2){
                     if($key2==$value['value']){$sel = "selected";}else{$sel = "";}
                     echo "<option value='".$key2."' ".$sel.">".$value2."</option>";
@@ -214,7 +214,7 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Simpan Data</button>
               </div>
             </form>
               <?php }else{
