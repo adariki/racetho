@@ -29,11 +29,16 @@ class Piutang extends CI_Controller {
 		$form = [];
 		$field = $this->db->field_data('p001');
 		$valAI = $this->autoInc();
-		
+		$dataOptionsQuery = $this->db->select('codesgl,namasgl')
+									 ->get('G002')->result_array();
+		foreach ($dataOptionsQuery as $key => $value) {
+			$dataOptions[$value['codesgl']] = $value['namasgl'];
+		}
 			$form[] = ['type'=>'text','name'=>'KODE_PIN','value'=>$valAI,'pk'=>1,'label'=>$this->label[0]];
 			$form[] = ['type'=>'text','name'=>'NAMA_PIN','value'=>'','label'=>$this->label[1]];
-			$form[] = ['type'=>'text','name'=>'SGL_PIN','value'=>'','label'=>$this->label[2]];
-			$form[] = ['type'=>'text','name'=>'SGL_PDPT','value'=>'','label'=>$this->label[3]];
+			$form[] = ['type'=>'select','name'=>'SGL_PIN','options'=>$dataOptions,'label'=>$this->label[2],'value'=>''];
+			$form[] = ['type'=>'select','name'=>'SGL_PDPT','options'=>$dataOptions,'label'=>$this->label[3],'value'=>''];
+			
 		
 			$this->load->view('index',['title'=>'Tambah Piutang','field'=>$form]);
 	}
@@ -43,10 +48,16 @@ class Piutang extends CI_Controller {
 		$val = (array) $this->db->get_where('p001',['KODE_PIN'=>$id])->row();
 		$form = [];
 		$field = $this->db->field_data('p001');
+		$dataOptionsQuery = $this->db->select('codesgl,namasgl')
+									 ->get('G002')->result_array();
+		foreach ($dataOptionsQuery as $key => $value) {
+			$dataOptions[$value['codesgl']] = $value['namasgl'];
+		}
 		$form[] = ['type'=>'text','name'=>'KODE_PIN','value'=>$val['KODE_PIN'],'pk'=>1,'label'=>$this->label[0]];
 			$form[] = ['type'=>'text','name'=>'NAMA_PIN','value'=>$val['NAMA_PIN'],'label'=>$this->label[1]];
-			$form[] = ['type'=>'text','name'=>'SGL_PIN','value'=>$val['SGL_PIN'],'label'=>$this->label[2]];
-			$form[] = ['type'=>'text','name'=>'SGL_PDPT','value'=>$val['SGL_PDPT'],'label'=>$this->label[3]];
+			$form[] = ['type'=>'select','name'=>'SGL_PIN','options'=>$dataOptions,'label'=>$label[2],'value'=>$val['SGL_PIN']];
+			$form[] = ['type'=>'select','name'=>'SGL_PDPT','options'=>$dataOptions,'label'=>$label[3],'value'=>$val['SGL_PDPT']];
+			
 			$this->load->view('index',['title'=>'Edit Piutang','field'=>$form]);
 		
 	}

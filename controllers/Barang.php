@@ -61,13 +61,15 @@ class Barang extends CI_Controller {
       ,NAMA_JNS,HJUAL_PCS,HJUAL_PCS_1')->get('B003')->field_data();
 		/*echo '<pre>';
 		print_r($dataOptions);die();*/
-			$form[]=['type'=>'text','name'=>'KODE_BARCODE','label'=>$this->label[0]];
-			$form[]=['type'=>'text','name'=>'NAMA_JNS','label'=>$this->label[1]];
 			$form[]=['type'=>'select','name'=>'KODE_JU','options'=>$dataOptions,'label'=>$this->label[2]];
 			$form[]=['type'=>'select','name'=>'KODE_SJ','options'=>$dataOptions2,'label'=>$this->label[3]];
-			$form[]=['type'=>'select','name'=>'KODE_SZ','options'=>$dataOptions3,'label'=>$this->label[4]];
 			$form[]=['type'=>'select','name'=>'KODE_SPL','options'=>$dataOptions4,'label'=>$this->label[5]];
+			$form[]=['type'=>'select','name'=>'KODE_SZ','options'=>$dataOptions3,'label'=>$this->label[4]];
+			
 			$form[]=['type'=>'select','name'=>'KODE_JNS','options'=>$dataOptions5,'label'=>$this->label[6]];
+			$form[]=['type'=>'text','name'=>'KODE_BARCODE','label'=>$this->label[0]];
+			$form[]=['type'=>'text','name'=>'NAMA_JNS','label'=>$this->label[1]];
+			
 			$form[]=['type'=>'number','name'=>'HJUAL_PCS','label'=>$this->label[7]];
 			$form[]=['type'=>'number','name'=>'HJUAL_PCS_1','label'=>$this->label[8]];
 		
@@ -130,13 +132,14 @@ class Barang extends CI_Controller {
 				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions4,'value'=>$val[$value->name]];
 			}
 		}*/
-			$form[]=['type'=>'text','name'=>'KODE_BARCODE','value'=>$val['KODE_BARCODE'],'pk'=>1,'label'=>$this->label[0]];
-			$form[]=['type'=>'text','name'=>'NAMA_JNS','value'=>$val['NAMA_JNS'],'label'=>$this->label[1]];
 			$form[]=['type'=>'select','name'=>'KODE_JU','options'=>$dataOptions,'value'=>$val['KODE_JU'],'label'=>$this->label[2]];
 			$form[]=['type'=>'select','name'=>'KODE_SJ','options'=>$dataOptions2,'value'=>$val['KODE_SJ'],'label'=>$this->label[3]];
-			$form[]=['type'=>'select','name'=>'KODE_SZ','options'=>$dataOptions3,'value'=>$val['KODE_SZ'],'label'=>$this->label[4]];
 			$form[]=['type'=>'select','name'=>'KODE_SPL','options'=>$dataOptions4,'value'=>$val['KODE_SPL'],'label'=>$this->label[5]];
+			$form[]=['type'=>'select','name'=>'KODE_SZ','options'=>$dataOptions3,'value'=>$val['KODE_SZ'],'label'=>$this->label[4]];
 			$form[]=['type'=>'select','name'=>'KODE_JNS','options'=>$dataOptions5,'value'=>$val['KODE_JNS'],'label'=>$this->label[6]];
+			$form[]=['type'=>'text','name'=>'KODE_BARCODE','value'=>$val['KODE_BARCODE'],'pk'=>1,'label'=>$this->label[0]];
+			$form[]=['type'=>'text','name'=>'NAMA_JNS','value'=>$val['NAMA_JNS'],'label'=>$this->label[1]];
+			
 			$form[]=['type'=>'number','name'=>'HJUAL_PCS','value'=>$val['HJUAL_PCS'],'label'=>$this->label[7]];
 			$form[]=['type'=>'number','name'=>'HJUAL_PCS_1','value'=>$val['HJUAL_PCS_1'],'label'=>$this->label[8]];
 
@@ -159,6 +162,24 @@ class Barang extends CI_Controller {
 		$this->db->delete('b003');
 		redirect('Barang');
 	}
+
+	public function generateBarcode(){
+		$post = $this->input->post();
+		
+		$num = $this->db->get('B003')->num_rows();
+		$num = $num + 1;
+		if($num<1000 && $num>99){
+			$numInt = "0".$num;
+		}else if($num<100 && $num>9){
+			$numInt="00".$num;
+		}else if($num<10){
+			$numInt="000".$num;
+		}else{
+			$numInt=$num;
+		}
+		echo $post['jenis_umum'].$post['sub_jenis'].$post['supplier'].$post['size'].$post['jenis'].$numInt;
+	}
+
 	function getdata($type=null){
 				header('Access-Control-Allow-Origin: *'); 
 				$requestData= $_REQUEST;

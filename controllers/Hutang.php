@@ -37,8 +37,8 @@ class Hutang extends CI_Controller {
 		
 			$form[] = ['type'=>'text','name'=>'Kode_hutang','value'=>$valAI,'pk'=>1,'label'=>$this->label[0]];
 			$form[] = ['type'=>'text','name'=>'Nama_hutang','value'=>'','label'=>$this->label[1]];
-			$form[] = ['type'=>'select','name'=>'SGL_HUTANG','value'=>'','label'=>$this->label[2],'options'=>$dataOptions];
-			$form[] = ['type'=>'select','name'=>'SGL_BIAYA','value'=>'','label'=>$this->label[3],'options'=>$dataOptions];
+			$form[] = ['type'=>'select','name'=>'SGL_HUTANG','options'=>$dataOptions,'label'=>$this->label[2],'value'=>''];
+			$form[] = ['type'=>'select','name'=>'SGL_BIAYA','options'=>$dataOptions,'label'=>$this->label[3],'value'=>''];
 		
 			$this->load->view('index',['title'=>'Tambah Hutang','field'=>$form]);
 	}

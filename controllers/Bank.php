@@ -36,17 +36,11 @@ class Bank extends CI_Controller {
 		$label = ['No Rekening','Nama Bank','Nama Rekening','GL Bank'];
 		/*echo '<pre>';
 		print_r($dataOptions);die();*/
-		foreach ($field as $key => $value) {
-			if($value->type=='nvarchar' && $value->name!=$fk){
-				$form[] = ['type'=>'text','name'=>$value->name,'value'=>'','pk'=>0,'label'=>$label[$key]];
-			}else if($value->type!='varchar' && $value->name!=$fk){
-				$form[] = ['type'=>'number','name'=>$value->name,'value'=>'','pk'=>0,'label'=>$label[$key]];
-			}else if($value->name==$fk){
-				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions,'label'=>$label[$key]];
-			}
-
-		}
 		
+		$form[] = ['type'=>'text','name'=>'NOREK','value'=>'','pk'=>0,'label'=>$label[0]];
+		$form[] = ['type'=>'text','name'=>'BANK','value'=>'','pk'=>0,'label'=>$label[1]];
+		$form[] = ['type'=>'text','name'=>'NAMA','value'=>'','pk'=>0,'label'=>$label[2]];
+		$form[] = ['type'=>'select','name'=>'SGL','options'=>$dataOptions,'label'=>$label[3]];
 			$this->load->view('index',['title'=>'Tambah Bank','field'=>$form]);
 	}
 
@@ -62,21 +56,10 @@ class Bank extends CI_Controller {
 			$dataOptions[$value['codesl']] = $value['namasl'];
 		}
 		$field = $this->db->field_data('C006');
-		foreach ($field as $key => $value) {
-			if($value->type=='nvarchar' && $value->name!=$fk){
-				$form[] = ['type'=>'text',
-							'name'=>$value->name,
-							'value'=>$val[$value->name],
-							'pk'=>$value->primary_key,'label'=>$label[$key]];
-			}else if($value->type!='nvarchar' && $value->name!=$fk){
-				$form[] = ['type'=>'number'
-							,'name'=>$value->name,
-							'value'=>$val[$value->name],
-							'pk'=>$value->primary_key,'label'=>$label[$key]];
-			}else if($value->name==$fk){
-				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions,'value'=>$val[$value->name],'label'=>$label[$key]];
-			}
-		}
+		$form[] = ['type'=>'text','name'=>'NOREK','value'=>$val['NOREK'],'pk'=>0,'label'=>$label[0]];
+		$form[] = ['type'=>'text','name'=>'BANK','value'=>$val['BANK'],'pk'=>0,'label'=>$label[1]];
+		$form[] = ['type'=>'text','name'=>'NAMA','value'=>$val['NAMA'],'pk'=>0,'label'=>$label[2]];
+		$form[] = ['type'=>'select','name'=>'SGL','options'=>$dataOptions,'label'=>$label[3],'value'=>$val['SGL']];
 			$this->load->view('index',['title'=>'Edit Bank','field'=>$form]);
 		
 	}
@@ -85,14 +68,14 @@ class Bank extends CI_Controller {
 		if($type=="add"){
 			$this->db->insert('C006',$this->input->post());
 		}else{
-			$this->db->where('NoRek',$this->input->post('NoRek'));
+			$this->db->where('NOREK',$this->input->post('NOREK'));
 			$this->db->update('C006',$this->input->post());
 		}
 		redirect('Bank');
 	}
 
 	public function delete($id){
-		$this->db->where('NoRek',$id);
+		$this->db->where('NOREK',$id);
 		$this->db->delete('C006');
 		redirect('Bank');
 	}
@@ -100,17 +83,10 @@ class Bank extends CI_Controller {
 	function getdata($type=null){
 				header('Access-Control-Allow-Origin: *'); 
 				$requestData= $_REQUEST;
-				
-
-				$columns = array(
-		      'NoRek',
-		      'Bank',
-		      'Nama',
-		      'SGL'
-		      );
+				$columns = array('NOREK','BANK','NAMA','SGL');
 				//$sel=implode(",", $columns);
 				$sqlQuery = "SELECT *
-							FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY [NoRek]) AS RowNum
+							FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY [NOREK]) AS RowNum
 							FROM [db_InTyasSalatiga].[dbo].[C006] ) AS SOD
 							WHERE SOD.RowNum BETWEEN ".$requestData['start']."+1
 							AND ".$requestData['start']."+".$requestData['length']."";
@@ -120,7 +96,7 @@ class Bank extends CI_Controller {
 				$totalData = $sql->num_rows();
 				$totalFiltered = $totalData;  
 				if( $requestData['search']['value'] ) {
-					$sqlQuery.="AND NoRek LIKE '%".$requestData['search']['value']."%' OR Bank LIKE '%".$requestData['search']['value']."%' ORDER BY ".$columns[$requestData['order'][0]['column']]." ".$requestData['order'][0]['dir']."";
+					$sqlQuery.="AND NOREK LIKE '%".$requestData['search']['value']."%' OR BANK LIKE '%".$requestData['search']['value']."%' ORDER BY ".$columns[$requestData['order'][0]['column']]." ".$requestData['order'][0]['dir']."";
 				$sql=$this->db->query($sqlQuery);
 				$totalFiltered = $sql->num_rows(); 
 			    $res=$sql->result_array();
@@ -132,11 +108,11 @@ class Bank extends CI_Controller {
 			$data = [];
 			foreach( $res as $k=>$row) {  
 				$nestedData=array(); 
-				$nestedData[] = $row["NoRek"];
-				$nestedData[] = $row["Bank"];
-				$nestedData[] = $row["Nama"];
+				$nestedData[] = $row["NOREK"];
+				$nestedData[] = $row["BANK"];
+				$nestedData[] = $row["NAMA"];
 				$nestedData[] = $row["SGL"];
-				$nestedData[] = "<a class='btn btn-success' href='".base_url()."index.php/".$this->uri->segment(1)."/edit/".$row["NoRek"]."'><span class='glyphicon glyphicon-pencil'> </span>Edit</a><a class='btn btn-danger' href='".base_url()."index.php/".$this->uri->segment(1)."/delete/".$row["NoRek"]."'><span class='glyphicon glyphicon-trash'> </span>Delete</a>";
+				$nestedData[] = "<a class='btn btn-success' href='".base_url()."index.php/".$this->uri->segment(1)."/edit/".$row["NOREK"]."'><span class='glyphicon glyphicon-pencil'> </span>Edit</a><a class='btn btn-danger' href='".base_url()."index.php/".$this->uri->segment(1)."/delete/".$row["NOREK"]."'><span class='glyphicon glyphicon-trash'> </span>Delete</a>";
 				
 				$data[] = $nestedData;
 			}

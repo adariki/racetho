@@ -18,6 +18,7 @@ class Sl extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+	public $label = ['Kode SGL','Kode SL','Nama SL'];
 	public function index()
 	{
 		$this->load->view('index',['title'=>'Sub Ledger']);
@@ -30,22 +31,25 @@ class Sl extends CI_Controller {
 		$dataOptionsQuery = $this->db->select('codesgl,namasgl')
 									 ->get('G002')->result_array();
 		foreach ($dataOptionsQuery as $key => $value) {
-			$dataOptions[$value['codesgl']] = $value['namasgl'];
+			$dataOptions[$value['codesgl']] = $value['codesgl']."-".$value['namasgl'];
 		}
 		$field = $this->db->field_data('g003');
 		$form[] = ['type'=>'select',
 							'name'=>'codesgl',
-							'value'=>'',
+							'value'=>$val['codesgl'],
 							'options'=>$dataOptions,
-							'pk'=>0];
+							'pk'=>0,
+							'label'=>$this->label[0]];
 							$form[] = ['type'=>'text',
 							'name'=>'codesl',
 							'value'=>$val['codesl'],
-							'pk'=>0];
+							'pk'=>0,
+							'label'=>$this->label[1]];
 							$form[] = ['type'=>'text',
 							'name'=>'namasl',
 							'value'=>$val['namasl'],
-							'pk'=>0];
+							'pk'=>0,
+							'label'=>$this->label[2]];
 		
 			$this->load->view('index',['title'=>'Tambah Sub Ledger','field'=>$form]);
 	}
@@ -58,22 +62,25 @@ class Sl extends CI_Controller {
 		$dataOptionsQuery = $this->db->select('codesgl,namasgl')
 									 ->get('G002')->result_array();
 		foreach ($dataOptionsQuery as $key => $value) {
-			$dataOptions[$value['codesgl']] = $value['namasgl'];
+			$dataOptions[$value['codesgl']] = $value['codesgl']."-".$value['namasgl'];
 		}
 		$field = $this->db->field_data('g003');
 		$form[] = ['type'=>'select',
 							'name'=>'codesgl',
 							'value'=>$val['codesgl'],
 							'options'=>$dataOptions,
-							'pk'=>0];
+							'pk'=>0,
+							'label'=>$this->label[0]];
 							$form[] = ['type'=>'text',
 							'name'=>'codesl',
 							'value'=>$val['codesl'],
-							'pk'=>0];
+							'pk'=>0,
+							'label'=>$this->label[1]];
 							$form[] = ['type'=>'text',
 							'name'=>'namasl',
 							'value'=>$val['namasl'],
-							'pk'=>0];
+							'pk'=>0,
+							'label'=>$this->label[2]];
 			$this->load->view('index',['title'=>'Edit Sub Ledger','field'=>$form]);
 		
 	}

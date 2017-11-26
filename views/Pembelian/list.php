@@ -31,10 +31,10 @@
                   <input type="text" name="tglfaktur" class="form-control" />
                   <label for="supplier">Supplier</label>
                   <select class="form-control" id="supplier" name="supplier" required>
-                  <?php $dataOptions = $this->db->select('KODE_JU,KETERANGAN')->get('B001')->result_array();?>
+                  <?php $dataOptions = $this->db->select('KODE_SPL,NAMA_SPL')->get('C007')->result_array();?>
                   <option>Silakan Pilih Supplier</option>
                   <?php foreach($dataOptions as $key=>$value){
-                    echo "<option value='".$value['KODE_JU']."'>".$value['KETERANGAN']."</option>";
+                    echo "<option value='".$value['KODE_SPL']."'>".$value['NAMA_SPL']."</option>";
                     }?>
                   </select>
                     </div>
@@ -46,17 +46,15 @@
                 </div>
                 <div class="col-sm-12">
                 <br>
-                  <a class="btn btn-success" href="<?= base_url()?>index.php/<?= $this->uri->segment(1)?>/add">Add</a><br>
+                  <button class="btn btn-success" data-toggle="modal" data-target="#modal-default">Add</button><br>
                                         <table class="table table-striped table-hover table-bordered" id="example1">
                                             <thead>
                                                 <tr>
                                                     <th> Kode </th>
-                                                    <th> CP </th>
                                                     <th> Nama </th>
-                                                    <th> Alamat </th>
-                                                    <th> Kota </th>
-                                                    <th> Telepon </th>
-                                                    <th> Npwp </th>
+                                                    <th> Jml Beli </th>
+                                                    <th> Harga Pcs </th>
+                                                    <th> Jml Harga </th>
                                                     <th> Action </th>
                                                 </tr>
                                             </thead>
@@ -88,3 +86,50 @@
 
         <!-- /.col -->
       </div>
+
+      <div class="modal fade" id="modal-default" >
+          <div class="modal-dialog">
+            <div class="modal-content" style="width: 800px">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Default Modal</h4>
+              </div>
+              <div class="modal-body">
+                
+                <form>
+                    <label for="jenis_umum">Jenis Umum</label>
+                    <select class="form-control" name="jenis_umum" id="jenis_umum">
+                      
+                    </select>
+                    <label for="sub_jenis">Sub Jenis</label>
+                    <select class="form-control" name="sub_jenis" id="sub_jenis">
+                      
+                    </select>
+                    <label for="size">Size</label>
+                    <select class="form-control" name="size" id="size">
+                      
+                    </select> 
+                    <label for="jenis">Jenis</label>
+                    <select class="form-control" name="jenis" id="jenis">
+                      
+                    </select> 
+                    <label for="kode_barcode">Kode Barcode</label>
+                   <!--  <input type="text" name="kode_barcode" id="kode_barcode" class="form-control" /> -->
+                    <select class="form-control" name="kode_barcode" id="kode_barcode">
+                      
+                    </select> 
+                    <label for="nama_barang">Nama Barang</label>
+                    <input type="text" name="nama_barang" class="form-control" />
+                </form>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>

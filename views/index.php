@@ -36,7 +36,7 @@
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="../../index2.html" class="logo">
+    <a href="<?= base_url() ?>index.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b>Rumah Batik</b> In-Tyas</span>
@@ -67,7 +67,7 @@
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                
 
                 <p>
                   <?= $this->session->userdata('username')?>
@@ -98,13 +98,8 @@
     <section class="sidebar">
       <!-- Sidebar user panel -->
       <div class="user-panel">
-        <div class="pull-left image">
-          <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-        </div>
-        <div class="pull-left info">
-          <p><?= $this->session->userdata('username');?></p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-        </div>
+        
+        
       </div>
       <!-- search form -->
       
@@ -120,29 +115,141 @@
                 </span>
           </a>
           <ul class="treeview-menu">
-          <li><a href="<?= base_url()?>index.php/JenisUmum"><i class="fa fa-circle-o"></i> Master Jenis Umum</a></li>
-           <li><a href="<?= base_url()?>index.php/Jenis"><i class="fa fa-circle-o"></i> Master Jenis</a></li>
-            <li><a href="<?= base_url()?>index.php/SubJenis"><i class="fa fa-circle-o"></i> Master Sub Jenis</a></li>
-            <li><a href="<?= base_url()?>index.php/Size"><i class="fa fa-circle-o"></i> Master Size</a></li>
-            <li><a href="<?= base_url()?>index.php/Barang"><i class="fa fa-circle-o"></i> Master barang</a></li>
-            <li><a href="<?= base_url()?>index.php/Supplier"><i class="fa fa-circle-o"></i> Master Supllier</a></li>
-            <li><a href="<?= base_url()?>index.php/Customer"><i class="fa fa-circle-o"></i> Master Customer</a></li>
-            <li><a href="<?= base_url()?>index.php/Bank"><i class="fa fa-circle-o"></i> Master Bank</a></li>
-            <li><a href="<?= base_url()?>index.php/Hutang"><i class="fa fa-circle-o"></i> Master Hutang</a></li>
-            <li><a href="<?= base_url()?>index.php/Piutang"><i class="fa fa-circle-o"></i> Master Piutang</a></li>
+          <li><a href="<?= base_url()?>index.php/JenisUmum"><i class="fa fa-circle-o"></i> Tabel Jenis Umum</a></li>
+            <li><a href="<?= base_url()?>index.php/SubJenis"><i class="fa fa-circle-o"></i> Tabel Sub Jenis</a></li>
+            <li><a href="<?= base_url()?>index.php/Size"><i class="fa fa-circle-o"></i> Tabel Size</a></li>
+            <li><a href="<?= base_url()?>index.php/Jenis"><i class="fa fa-circle-o"></i> Tabel Jenis</a></li>
+            <li><a href="<?= base_url()?>index.php/Barang"><i class="fa fa-circle-o"></i> Tabel Barang</a></li>
+            <li><a href="<?= base_url()?>index.php/Bank"><i class="fa fa-circle-o"></i> Tabel Bank</a></li>
+            <li><a href="<?= base_url()?>index.php/Supplier"><i class="fa fa-circle-o"></i> Tabel Supllier</a></li>
+            <li><a href="<?= base_url()?>index.php/Customer"><i class="fa fa-circle-o"></i> Tabel Customer</a></li>
+            <li><a href="<?= base_url()?>index.php/Operator"><i class="fa fa-circle-o"></i> Tabel Operator</a></li>
+            <li><a href="<?= base_url()?>index.php/Hutang"><i class="fa fa-circle-o"></i> Tabel Hutang</a></li>
+            <li><a href="<?= base_url()?>index.php/Piutang"><i class="fa fa-circle-o"></i> Tabel Piutang</a></li>
             <li class="treeview">
-              <a href="#"><i class="fa fa-circle-o"></i> Chart Of Accounts
+              <a href="#"><i class="fa fa-circle-o"></i>Tabel Chart Of Accounts
                 <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span>
               </a>
               <ul class="treeview-menu">
-                <li><a href="<?= base_url()?>index.php/Gl"><i class="fa fa-circle-o"></i>GeneraL Ledger</a></li>
-                <li><a href="<?= base_url()?>index.php/Sgl"><i class="fa fa-circle-o"></i>Sub GeneraL Ledger</a></li>
+                <li><a href="<?= base_url()?>index.php/Gl"><i class="fa fa-circle-o"></i>General Ledger</a></li>
+                <li><a href="<?= base_url()?>index.php/Sgl"><i class="fa fa-circle-o"></i>Sub General Ledger</a></li>
                 <li><a href="<?= base_url()?>index.php/Sl"><i class="fa fa-circle-o"></i>Sub Ledger</a></li>
                 
               </ul>
             </li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-share"></i> <span>Transaksi Stock</span>
+            <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+          </a>
+          <ul class="treeview-menu">
+          <li><a href="<?= base_url()?>index.php/Pembelian"><i class="fa fa-circle-o"></i> Pembelian </a></li>
+            
+            
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-share"></i> <span>Transaksi Penjualan</span>
+            <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+          </a>
+          <ul class="treeview-menu">
+          <li><a href="#"><i class="fa fa-circle-o"></i> Penjualan </a></li>
+          <li><a href="#"><i class="fa fa-circle-o"></i> Cetak Ulang Nota </a></li>
+          <li><a href="#"><i class="fa fa-circle-o"></i> Return Penjualan </a></li>
+            
+            
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-share"></i> <span>Perubahan</span>
+            <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+          </a>
+          <ul class="treeview-menu">
+          <li><a href="#"><i class="fa fa-circle-o"></i> Harga Jual </a></li>
+
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-share"></i> <span>Informasi</span>
+            <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+          </a>
+          <ul class="treeview-menu">
+          <li><a href="#"><i class="fa fa-circle-o"></i> Stock Global </a></li>
+          <li><a href="#"><i class="fa fa-circle-o"></i> Hutang </a></li>
+          <li><a href="#"><i class="fa fa-circle-o"></i> Piutang </a></li>
+          <li><a href="#"><i class="fa fa-circle-o"></i> Bilyet Giro </a></li>
+
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-share"></i> <span>Transaksi Sub GL</span>
+            <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+          </a>
+          <ul class="treeview-menu">
+          <li><a href="#"><i class="fa fa-circle-o"></i> Antar Sub GL </a></li>
+          <li><a href="#"><i class="fa fa-circle-o"></i> Debet Barang </a></li>
+          <li><a href="#"><i class="fa fa-circle-o"></i> Credit </a></li>
+          
+
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-share"></i> <span>Hutang</span>
+            <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+          </a>
+          <ul class="treeview-menu">
+          <li><a href="#"><i class="fa fa-circle-o"></i> Pembayaran Hutang </a></li>
+          
+          
+
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-share"></i> <span>Piutang</span>
+            <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+          </a>
+          <ul class="treeview-menu">
+          <li><a href="#"><i class="fa fa-circle-o"></i> Pembayaran Piutang </a></li>
+          
+          
+
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-share"></i> <span>Laporan</span>
+            <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+          </a>
+          <ul class="treeview-menu">
+          <li><a href="#"><i class="fa fa-circle-o"></i> Laporan Keuangan </a></li>
+          <li><a href="#"><i class="fa fa-circle-o"></i> Laporan Statement </a></li>
+          <li><a href="#"><i class="fa fa-circle-o"></i> Laporan Transaksi Per User </a></li>
           </ul>
         </li>
 
@@ -168,10 +275,7 @@
       <h1>
         <?= $title ?>
       </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active"><?= $title ?></li>
-      </ol>
+      
     </section>
 
     <!-- Main content -->
@@ -215,6 +319,7 @@
 
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Simpan Data</button>
+                <a href="<?= base_url().'index.php/'.$this->uri->segment(1)?>" class="btn btn-warning">Kembali</a>
               </div>
             </form>
               <?php }else{
@@ -273,7 +378,72 @@
             'type': 'POST'
                 },
             } );
-  })
+  });
+
+$("#KODE_JNS").change(function(){
+  $.post( "<?= base_url() ?>index.php/Barang/generateBarcode", { jenis_umum: $("#KODE_JU").val(),
+      sub_jenis: $("#KODE_SJ").val(),size:$("#KODE_SZ").val(),supplier:$("#KODE_SPL").val(),jenis:$("#KODE_JNS").val() })
+  .done(function( data ) {
+      $("#KODE_BARCODE").val(data);
+  });
+});
+
+$(document).ready(function() {
+  $.get("<?= base_url()?>index.php/Pembelian/selectJu",function(data){
+      var htmls = "";
+      var obj=JSON.parse(data);
+      for(i=0;i<obj.length;i++){
+        htmls+="<option value="+obj[i].KODE_JU+">"+obj[i].KETERANGAN+"</option>";
+      }
+      $("#jenis_umum").html(htmls);
+
+    });
+  $.get("<?= base_url()?>index.php/Pembelian/selectSj",function(data){
+      var htmls = "";
+      var obj=JSON.parse(data);
+      for(i=0;i<obj.length;i++){
+        htmls+="<option value="+obj[i].KODE_SJ+">"+obj[i].KETERANGAN+"</option>";
+      }
+      $("#sub_jenis").html(htmls);
+
+    });
+  $.get("<?= base_url()?>index.php/Pembelian/selectSz",function(data){
+      var htmls = "";
+      var obj=JSON.parse(data);
+      for(i=0;i<obj.length;i++){
+        htmls+="<option value="+obj[i].KODE_SZ+">"+obj[i].KETERANGAN+"</option>";
+      }
+      $("#size").html(htmls);
+
+    });
+  $.get("<?= base_url()?>index.php/Pembelian/selectJenis",function(data){
+      var htmls = "";
+      var obj=JSON.parse(data);
+      for(i=0;i<obj.length;i++){
+        htmls+="<option value="+obj[i].KODE_JNS+">"+obj[i].KETERANGAN+"</option>";
+      }
+      $("#jenis").html(htmls);
+
+    });
+  $("#jenis").change(function(){
+      $.post( "<?= base_url() ?>index.php/Pembelian/generateBarcode", { jenis_umum: $("#jenis_umum").val(),
+          sub_jenis: $("#sub_jenis").val(),size:$("#size").val(),supplier:$("#supplier").val(),jenis:$("#jenis").val() })
+          .done(function( data ) {
+          var htmls = "<option>Pilih</option>";
+          var obj=JSON.parse(data);
+          if(data!="null"){
+              for(i=0;i<obj.length;i++){
+                htmls+="<option value="+obj[i].KODE_BARCODE+">"+obj[i].NAMA_JNS+"</option>";
+              }
+            $("#kode_barcode").html(htmls);
+          }else{
+            $("#kode_barcode").html("<option>Pilih</option>");
+          }
+          
+          });
+    });
+  });
+
 </script>
 </body>
 </html>

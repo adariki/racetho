@@ -34,7 +34,7 @@ class Gl extends CI_Controller {
 		$dataOptions = ['D'=>'DEBET','C'=>'KREDIT'];
 		$dataOptions2 = ['NERACA'=>'NERACA','LABA RUGI'=>'LABA RUGI'];
 		$dataOptions3 = ['ASET'=>'ASET','BIAYA'=>'BIAYA','KEWAJIBAN'=>'KEWAJIBAN','MODAL'=>'MODAL','PENDAPATAN'=>'PENDAPATAN'];
-		foreach ($field as $key => $value) {
+		/*foreach ($field as $key => $value) {
 			if($value->type=='nvarchar' && $value->name!=$fk && $value->name!=$fk2 && $value->name!=$fk3){
 				$form[] = ['type'=>'text','name'=>$value->name,'value'=>'','label'=>$this->label[$key]];
 			}else if($value->type!='nvarchar' && $value->name!=$fk && $value->name!=$fk2 && $value->name!=$fk3){
@@ -47,8 +47,12 @@ class Gl extends CI_Controller {
 			else if($value->name==$fk3){
 				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions3,'label'=>$this->label[$key]];
 			}
-		}
-		
+		}*/
+			$form[] = ['type'=>'text','name'=>'codegl','value'=>'','label'=>$this->label[0]];
+			$form[] = ['type'=>'text','name'=>'namagl','value'=>'','label'=>$this->label[1]];
+			$form[] = ['type'=>'select','name'=>'Balance','options'=>$dataOptions2,'label'=>$this->label[2]];
+			$form[] = ['type'=>'select','name'=>'posisi','options'=>$dataOptions3,'label'=>$this->label[3]];
+			$form[] = ['type'=>'select','name'=>'dbcr','options'=>$dataOptions,'label'=>$this->label[4]];
 			$this->load->view('index',['title'=>'Tambah General Ledger','field'=>$form]);
 	}
 
@@ -63,20 +67,11 @@ class Gl extends CI_Controller {
 		$dataOptions = ['D'=>'DEBET','C'=>'KREDIT'];
 		$dataOptions2 = ['NERACA'=>'NERACA','LABA RUGI'=>'LABA RUGI'];
 		$dataOptions3 = ['ASET'=>'ASET','BIAYA'=>'BIAYA','KEWAJIBAN'=>'KEWAJIBAN','MODAL'=>'MODAL','PENDAPATAN'=>'PENDAPATAN'];
-		foreach ($field as $key => $value) {
-			if($value->type=='nvarchar' && $value->name!=$fk && $value->name!=$fk2){
-				$form[] = ['type'=>'text','name'=>$value->name,'value'=>$val[$value->name],'label'=>$this->label[$key]];
-			}else if($value->type!='nvarchar' && $value->name!=$fk && $value->name!=$fk2){
-				$form[] = ['type'=>'number','name'=>$value->name,'value'=>$val[$value->name],'label'=>$this->label[$key]];
-			}else if($value->name==$fk){
-				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions,'value'=>$val[$value->name],'label'=>$this->label[$key]];
-			}else if($value->name==$fk2){
-				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions2,'value'=>$val[$value->name],'label'=>$this->label[$key]];
-			}
-			else if($value->name==$fk3){
-				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions3,'value'=>$val[$value->name],'label'=>$this->label[$key]];
-			}
-		}
+		$form[] = ['type'=>'text','name'=>'codegl','value'=>$val['codegl'],'label'=>$this->label[0]];
+			$form[] = ['type'=>'text','name'=>'namagl','value'=>$val['namagl'],'label'=>$this->label[1]];
+			$form[] = ['type'=>'select','name'=>'Balance','options'=>$dataOptions2,'label'=>$this->label[2],'value'=>$val['Balance']];
+			$form[] = ['type'=>'select','name'=>'posisi','options'=>$dataOptions3,'label'=>$this->label[3],'value'=>$val['posisi']];
+			$form[] = ['type'=>'select','name'=>'dbcr','options'=>$dataOptions,'label'=>$this->label[4],'value'=>$val['dbcr']];
 			$this->load->view('index',['title'=>'Edit General Ledger','field'=>$form]);
 		
 	}

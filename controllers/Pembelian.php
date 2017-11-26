@@ -28,9 +28,56 @@ class Pembelian extends CI_Controller {
 		$this->load->view('index',['title'=>'Pembelian','form'=>$form]);
 	}
 
-	public function select(){
-		$query=$this->db->get('C007');
-		return $query->result_array();
+	public function selectJu(){
+		$query=$this->db->select('KODE_JU,KETERANGAN')->get('B001')->result_array();
+		foreach ($query as $key => $value) {
+			$datajson[] = ["KODE_JU"=>$value['KODE_JU'],"KETERANGAN"=>$value['KETERANGAN']];
+		}
+		echo json_encode($datajson);
+	}
+	public function selectSj(){
+		$query=$this->db->select('KODE_SJ,KETERANGAN')->get('B001A')->result_array();
+		foreach ($query as $key => $value) {
+			$datajson[] = ["KODE_SJ"=>$value['KODE_SJ'],"KETERANGAN"=>$value['KETERANGAN']];
+		}
+		echo json_encode($datajson);
+	}
+	public function selectSz(){
+		$query=$this->db->select('KODE_SZ,KETERANGAN')->get('B001B')->result_array();
+		foreach ($query as $key => $value) {
+			$datajson[] = ["KODE_SZ"=>$value['KODE_SZ'],"KETERANGAN"=>$value['KETERANGAN']];
+		}
+		echo json_encode($datajson);
+	}
+	public function selectJenis(){
+		$query=$this->db->select('KODE_JNS,KETERANGAN')->get('B001C')->result_array();
+		foreach ($query as $key => $value) {
+			$datajson[] = ["KODE_JNS"=>$value['KODE_JNS'],"KETERANGAN"=>$value['KETERANGAN']];
+		}
+		echo json_encode($datajson);
+	}
+
+	public function generateBarcode(){
+		$post = $this->input->post();
+		
+		$num = $this->db->get('B003')->num_rows();
+		$num = $num + 1;
+		if($num<1000 && $num>99){
+			$numInt = "0".$num;
+		}else if($num<100 && $num>9){
+			$numInt="00".$num;
+		}else if($num<10){
+			$numInt="000".$num;
+		}else{
+			$numInt=$num;
+		}
+		$kodeBar=$post['jenis_umum'].$post['sub_jenis'].$post['supplier'].$post['size'].$post['jenis'];
+		$this->db->like('KODE_BARCODE',(int)$kodeBar);
+		$queryGenBar = $this->db->select('KODE_BARCODE,NAMA_JNS')->get('B003')->result_array();
+		foreach ($queryGenBar as $key => $value) {
+			$datajson[] = ["KODE_BARCODE"=>$value['KODE_BARCODE'],"NAMA_JNS"=>$value['NAMA_JNS']];
+		}
+		echo json_encode($datajson);
 	}
 
 	public function add()
@@ -69,10 +116,10 @@ class Pembelian extends CI_Controller {
 
 	public function proses($type){
 		if($type=="add"){
-			$this->db->insert('c012',$this->input->post());
+			$this->db->insert('BL001',$this->input->post());
 		}else{
 			$this->db->where('KODE_CST',$this->input->post('KODE_CST'));
-			$this->db->update('c012',$this->input->post());
+			$this->db->update('BL001',$this->input->post());
 		}
 		redirect('Customer');
 	}
@@ -84,20 +131,20 @@ class Pembelian extends CI_Controller {
 				$requestData= $_REQUEST;
 				
 
-				$columns = array('KODE_CST','cp','NAMA_CST','alamat','kota','telepon','npwp','jenis');
+				$columns = array('KODE_BARCODE','NAMA_JNS','JML_BELI','HARGA_PCS','JML_HARGA');
 				//$sel=implode(",", $columns);
 				$sqlQuery = "SELECT *
-							FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY [KODE_CST]) AS RowNum
-							FROM [db_InTyasSalatiga].[dbo].[C012] ) AS SOD
+							FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY [ID]) AS RowNum
+							FROM [db_InTyasSalatiga].[dbo].[BL001] ) AS SOD
 							WHERE SOD.RowNum BETWEEN ".$requestData['start']."+1
 							AND ".$requestData['start']."+".$requestData['length']."";
 				/*$sql = "SELECT $sel ";
 				$sql.=" FROM po where id_user = '$session' $add_q";*/
-				$sql = $this->db->get('C012');
+				$sql = $this->db->get('BL001');
 				$totalData = $sql->num_rows();
 				$totalFiltered = $totalData;  
 				if( $requestData['search']['value'] ) {
-					$sqlQuery.="AND KODE_CST LIKE '%".$requestData['search']['value']."%' OR NAMA_CST LIKE '%".$requestData['search']['value']."%' ORDER BY ".$columns[$requestData['order'][0]['column']]." ".$requestData['order'][0]['dir']."";
+					$sqlQuery.="AND KODE_BARCODE LIKE '%".$requestData['search']['value']."%' OR NAMA_JNS LIKE '%".$requestData['search']['value']."%' ORDER BY ".$columns[$requestData['order'][0]['column']]." ".$requestData['order'][0]['dir']."";
 					$sql=$this->db->query($sqlQuery);
 				$totalFiltered = $sql->num_rows(); 
 			    $res=$sql->result_array();
@@ -113,13 +160,11 @@ class Pembelian extends CI_Controller {
 			$data = [];
 			foreach( $res as $k=>$row) {  
 				$nestedData=array(); 
-				$nestedData[] = $row["KODE_CST"];
-				$nestedData[] = $row["NAMA_CST"];
-				$nestedData[] = $row["Alamat"];
-				$nestedData[] = $row["Kota"];
-				$nestedData[] = $row["Telepon"];
-				$nestedData[] = $row["NoHp"];
-				$nestedData[] = $row["NoFax"];
+				$nestedData[] = $row["KODE_BARCODE"];
+				$nestedData[] = $row["NAMA_JNS"];
+				$nestedData[] = $row["JML_BELI"];
+				$nestedData[] = $row["HARGA_PCS"];
+				$nestedData[] = $row["JML_HARGA"];
 				$nestedData[] = "<a class='btn btn-success' href='".base_url()."index.php/".$this->uri->segment(1)."/edit/".$row["KODE_CST"]."'><span class='glyphicon glyphicon-pencil'> </span>Edit</a><a class='btn btn-danger' href='".base_url()."index.php/".$this->uri->segment(1)."/delete/".$row["KODE_CST"]."'><span class='glyphicon glyphicon-trash'> </span>Delete</a>";
 				
 				$data[] = $nestedData;

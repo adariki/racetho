@@ -18,6 +18,7 @@ class Sgl extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+	public $label = ['Kode GL','Kode','Nama'];
 	public function index()
 	{
 		$this->load->view('index',['title'=>'Sub General Ledger']);
@@ -31,24 +32,26 @@ class Sgl extends CI_Controller {
 		$dataOptionsQuery = $this->db->select('codegl,namagl')
 									 ->get('g001')->result_array();
 		foreach ($dataOptionsQuery as $key => $value) {
-			$dataOptions[$value['codegl']] = $value['namagl'];
+			$dataOptions[$value['codegl']] = $value['codegl']."-".$value['namagl'];
 		}
 		$field = $this->db->field_data('g002');
-		foreach ($field as $key => $value) {
-			if($value->type=='nvarchar' && $value->name!=$fk){
-				$form[] = ['type'=>'text',
-							'name'=>$value->name,
-							'value'=>$val[$value->name],
-							'pk'=>0];
-			}else if($value->type!='nvarchar' && $value->name!=$fk){
-				$form[] = ['type'=>'number'
-							,'name'=>$value->name,
-							'value'=>$val[$value->name],
-							'pk'=>0];
-			}else if($value->name==$fk){
-				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions,'value'=>$val[$value->name]];
-			}
-		}
+			
+		$form[] = ['type'=>'select',
+							'name'=>'codegl',
+							'value'=>'',
+							'pk'=>0,
+							'label'=>$this->label[0],
+							'options'=>$dataOptions];
+		$form[] = ['type'=>'text',
+							'name'=>'codesgl',
+							'value'=>'',
+							'pk'=>0,
+							'label'=>$this->label[1]];
+		$form[] = ['type'=>'text',
+							'name'=>'namasgl',
+							'value'=>'',
+							'pk'=>0,
+							'label'=>$this->label[2]];
 		
 			$this->load->view('index',['title'=>'Tambah Sub General Ledger','field'=>$form]);
 	}
@@ -61,24 +64,25 @@ class Sgl extends CI_Controller {
 		$dataOptionsQuery = $this->db->select('codegl,namagl')
 									 ->get('g001')->result_array();
 		foreach ($dataOptionsQuery as $key => $value) {
-			$dataOptions[$value['codegl']] = $value['namagl'];
+			$dataOptions[$value['codegl']] = $value['codegl']."-".$value['namagl'];
 		}
 		$field = $this->db->field_data('g002');
-		foreach ($field as $key => $value) {
-			if($value->type=='nvarchar' && $value->name!=$fk){
-				$form[] = ['type'=>'text',
-							'name'=>$value->name,
-							'value'=>$val[$value->name],
-							'pk'=>$value->primary_key];
-			}else if($value->type!='nvarchar' && $value->name!=$fk){
-				$form[] = ['type'=>'number'
-							,'name'=>$value->name,
-							'value'=>$val[$value->name],
-							'pk'=>$value->primary_key];
-			}else if($value->name==$fk){
-				$form[] = ['type'=>'select','name'=>$value->name,'options'=>$dataOptions,'value'=>$val[$value->name]];
-			}
-		}
+		$form[] = ['type'=>'select',
+							'name'=>'codegl',
+							'value'=>$val['codegl'],
+							'pk'=>0,
+							'label'=>$this->label[0],
+							'options'=>$dataOptions];
+		$form[] = ['type'=>'text',
+							'name'=>'codesgl',
+							'value'=>$val['codesgl'],
+							'pk'=>0,
+							'label'=>$this->label[1]];
+		$form[] = ['type'=>'text',
+							'name'=>'namasgl',
+							'value'=>$val['namasgl'],
+							'pk'=>0,
+							'label'=>$this->label[2]];
 			$this->load->view('index',['title'=>'Edit Sub General Ledger','field'=>$form]);
 		
 	}
@@ -136,7 +140,7 @@ class Sgl extends CI_Controller {
 				$nestedData[] = $row["codesgl"];
 				$nestedData[] = $row["codegl"];
 				$nestedData[] = $row["namasgl"];
-				$nestedData[] = "<a class='btn btn-success' href='".base_url()."index.php/".$this->uri->segment(1)."/edit/".$row["codesgl"]."'><span class='glyphicon glyphicon-pencil'> </span>Edit</a><a class='btn btn-danger' href='".base_url()."index.php/".$this->uri->segment(1)."/delete/".$row["codesgl"]."'><span class='glyphicon glyphicon-trash'> </span>Delete</a>";
+				$nestedData[] = "<a class='btn btn-success' href='".base_url()."index.php/".$this->uri->segment(1)."/edit/".$row["codesgl"]."'><span class='glyphicon glyphicon-pencil'> </span></a><a class='btn btn-danger' href='".base_url()."index.php/".$this->uri->segment(1)."/delete/".$row["codesgl"]."'><span class='glyphicon glyphicon-trash'> </span></a>";
 				
 				$data[] = $nestedData;
 			}

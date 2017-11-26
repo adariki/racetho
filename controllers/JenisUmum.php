@@ -195,7 +195,7 @@ class JenisUmum extends CI_Controller {
 				$nestedData[] = $row["SGL_PEMBELIAN"];
 				$nestedData[] = $row["SGL_HPP"];
 				$nestedData[] = $row["SGL_RETURNJUAL"];
-				$nestedData[] = "<a class='btn btn-success' href='".base_url()."index.php/".$this->uri->segment(1)."/edit/".$row["KODE_JU"]."'><span class='glyphicon glyphicon-pencil'> </span>Edit</a><a class='btn btn-danger' href='".base_url()."index.php/".$this->uri->segment(1)."/delete/".$row["KODE_JU"]."'><span class='glyphicon glyphicon-trash'> </span>Delete</a>";
+				$nestedData[] = "<a class='btn btn-success' href='".base_url()."index.php/".$this->uri->segment(1)."/edit/".$row["KODE_JU"]."'><span class='glyphicon glyphicon-pencil'> </span></a><a class='btn btn-danger' href='".base_url()."index.php/".$this->uri->segment(1)."/delete/".$row["KODE_JU"]."'><span class='glyphicon glyphicon-trash'> </span></a>";
 				
 				$data[] = $nestedData;
 			}
