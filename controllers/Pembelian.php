@@ -56,6 +56,29 @@ class Pembelian extends CI_Controller {
 		}
 		echo json_encode($datajson);
 	}
+	public function selectKodeBarcode($id){
+		$query=$this->db->get_where('B003',['KODE_BARCODE'=>$id])->row();
+		$datajson = ["KODE_BARCODE"=>$query->KODE_BARCODE,"NAMA_JNS"=>$query->NAMA_JNS,"HJUAL_PCS"=>$query->HJUAL_PCS];
+		echo json_encode($datajson);
+	}
+
+	public function selectBank(){
+		$query=$this->db->get('C006')->result();
+		foreach ($query as $key => $value) {
+			$datajson[] = ["ID"=>$value->ID,"NOREK"=>$value->NOREK,"BANK"=>$value->BANK,"NAMA"=>$value->NAMA];
+		}
+		
+		echo json_encode($datajson);
+	}
+
+	public function selectHutang(){
+		$query=$this->db->get('H001')->result();
+		foreach ($query as $key => $value) {
+			$datajson[] = ["KODE_HUTANG"=>$value->Kode_hutang,"NAMA"=>$value->Nama_hutang];
+		}
+		
+		echo json_encode($datajson);
+	}
 
 	public function generateBarcode(){
 		$post = $this->input->post();
@@ -80,38 +103,68 @@ class Pembelian extends CI_Controller {
 		echo json_encode($datajson);
 	}
 
-	public function add()
-	{
-		$form = [];
-		$field = $this->db->field_data('c012');
-		foreach ($field as $key => $value) {
-			if($value->type=='nvarchar'){
-				$form[] = ['type'=>'text','name'=>$value->name,'value'=>''];
-			}else{
-				$form[] = ['type'=>'number','name'=>$value->name,'value'=>''];
-			}
-		}
-		
-			$this->load->view('index',['title'=>'Tambah Customer','field'=>$form]);
+	public function tambahKode($id){
+		$query = $this->db->get_where('B003',['KODE_BARCODE'=>$id])->row();
+		$dataBarang = ['KODE_BARCODE'=>$query->KODE_BARCODE,'NAMA_JNS'=>$query->NAMA_JNS,'HARGA_PCS'=>$query->HJUAL_PCS,'KODE_JU'=>$query->KODE_JU,'KODE_SJ'=>$query->KODE_SJ,'KODE_SZ'=>$query->KODE_SZ,'KODE_JNS'=>$query->KODE_JNS];
+		echo json_encode($dataBarang);
 	}
 
-	public function edit($id)
+	public function add()
 	{
-		$val = (array) $this->db->get_where('c012',['KODE_CST'=>$id])->row();
-		$form = [];
-		$field = $this->db->field_data('c012');
-		foreach ($field as $key => $value) {
-			if($value->type=='nvarchar'){
-				$form[] = ['type'=>'text','name'=>$value->name,
-							'value'=>$val[$value->name]];
-			}else{
-				$form[] = ['type'=>'number'
-							,'name'=>$value->name,
-							'value'=>$val[$value->name]];
-			}
+		$post=$this->input->post();
+		$arrayPost = [
+		'NO_TRANS'=>$post['notrans'],
+		'KODE_JU'=>$post['jenis_umum'],
+		'NO_URUT'=>0001,
+		'KODE_SJ'=>$post['sub_jenis'],
+		'KODE_SZ'=>$post['size'],
+		'KODE_JNS'=>$post['jenis'],
+		'KODE_BARCODE'=>$post['kode_barcode'],
+		'NAMA_JNS'=>$post['nama_barang'],
+		'JML_BELI'=>$post['jum_barang'],
+		'HARGA_PCS'=>$post['hrg_barang'],
+		'JML_HARGA'=>$post['tot_barang'],
+		'KODE_SPL'=>$post['supplier']
+		];
+		$this->db->insert('BL001',$arrayPost);
+		//redirect('Pembelian');
+	}
+
+	public function addPembayaran()
+	{
+		$post=$this->input->post();
+		if($post['bilyet_giro']==0){
+			$post['rek_an2']="";
 		}
-			$this->load->view('index',['title'=>'Edit Customer','field'=>$form]);
-		
+		if($post['non_tunai']==0){
+			$post['rek_an']="";
+		}
+		$arrayPost = [
+		'NO_TRANS'=>$post['notrans'],
+		'TOTAL_BELI'=>$post['tot_barang'],
+		'TUNAI'=>$post['tunai'],
+		'NON_TUNAI'=>$post['non_tunai'],
+		'HUTANG'=>$post['hutang'],
+		'BG'=>$post['bilyet_giro'],
+		'ABA_NOREK'=>$post['rek_an'],
+		'ABA_BANK'=>$post['no_rek'],
+		'BG_NOMOR'=>$post['no_giro'],
+		'BG_BANK'=>$post['rek_an2'],
+		'BG_TGL'=>$post['tgl_bg'],
+		'BG_JT'=>$post['tgl_jt'],
+		'H_KODE'=>$post['kode_hutang'],
+		'H_NOMOR'=>$post['no_hutang'],
+		'H_TGL'=>$post['tgl_mulai'],
+		'H_JT'=>$post['tgl_jatuh'],
+		'H_KET'=>$post['syarat']
+		];
+		$this->db->insert('BL002',$arrayPost);
+		redirect('Pembelian');
+	}
+
+	public function jumHarga($id){
+		$query = $this->db->select('sum(JML_HARGA) as JML_HARGA')->get_where('BL001',['NO_TRANS'=>$id])->row();
+		echo $query->JML_HARGA;
 	}
 
 	public function proses($type){
@@ -165,7 +218,7 @@ class Pembelian extends CI_Controller {
 				$nestedData[] = $row["JML_BELI"];
 				$nestedData[] = $row["HARGA_PCS"];
 				$nestedData[] = $row["JML_HARGA"];
-				$nestedData[] = "<a class='btn btn-success' href='".base_url()."index.php/".$this->uri->segment(1)."/edit/".$row["KODE_CST"]."'><span class='glyphicon glyphicon-pencil'> </span>Edit</a><a class='btn btn-danger' href='".base_url()."index.php/".$this->uri->segment(1)."/delete/".$row["KODE_CST"]."'><span class='glyphicon glyphicon-trash'> </span>Delete</a>";
+				$nestedData[] = "<a class='btn btn-danger' href='".base_url()."index.php/".$this->uri->segment(1)."/delete/".$row["KODE_CST"]."'><span class='glyphicon glyphicon-trash'> </span>Delete</a>";
 				
 				$data[] = $nestedData;
 			}
@@ -177,6 +230,96 @@ class Pembelian extends CI_Controller {
 						"recordsTotal"    => intval( $totalData ),  // total number of records
 						"recordsFiltered" => intval( $totalFiltered ), // total number of records after searching, if there is no searching then totalFiltered = totalData
 						"data"            => $data // total data array
+						);
+
+			echo json_encode($json_data);
+    }
+
+    function getdataPop($type=null){
+				header('Access-Control-Allow-Origin: *'); 
+				$requestData= $_REQUEST;
+				$dataOptionsQuery = $this->db->select('KODE_JU,KETERANGAN')
+									 ->get('B001')->result_array();
+				foreach ($dataOptionsQuery as $key => $value) {
+					$dataOptions[$value['KODE_JU']] = $value['KETERANGAN'];
+				}
+				$dataOptionsQuery2 = $this->db->select('KODE_SJ,KETERANGAN')
+											 ->get('B001A')->result_array();
+				foreach ($dataOptionsQuery2 as $key2 => $value2) {
+					$dataOptions2[$value2['KODE_SJ']] = $value2['KETERANGAN'];
+				}
+				$dataOptionsQuery3 = $this->db->select('KODE_SZ,KETERANGAN')
+											 ->get('B001B')->result_array();
+				foreach ($dataOptionsQuery3 as $key3 => $value3) {
+					$dataOptions3[$value3['KODE_SZ']] = $value3['KETERANGAN'];
+				}
+				$dataOptionsQuery4 = $this->db->select('KODE_SPL,NAMA_SPL')
+											 ->get('C007')->result_array();
+				foreach ($dataOptionsQuery4 as $key4 => $value4) {
+					$dataOptions4[$value4['KODE_SPL']] = $value4['NAMA_SPL'];
+				}
+				$dataOptionsQuery5 = $this->db->select('KODE_JNS,KETERANGAN')
+									 ->get('B001C')->result_array();
+				foreach ($dataOptionsQuery5 as $key5 => $value5) {
+					$dataOptions5[$value5['KODE_JNS']] = $value5['KETERANGAN'];
+				}
+
+				$columns = array('KODE_JU'
+		      ,'KODE_SJ'
+		      ,'KODE_SPL'
+		      ,'KODE_SZ'
+		      ,'KODE_JNS'
+		      ,'KODE_BARCODE'
+		      ,'NAMA_JNS'
+		      
+		      ,'HJUAL_PCS'
+		      
+		      ,'HJUAL_PCS_1'
+		      );
+				//$sel=implode(",", $columns);
+				$sqlQuery = "SELECT *
+							FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY [KODE_BARCODE]) AS RowNum
+							FROM [db_InTyasSalatiga].[dbo].[B003] ) AS SOD
+							WHERE SOD.RowNum BETWEEN ".$requestData['start']."+1
+							AND ".$requestData['start']."+".$requestData['length']."";
+				/*$sql = "SELECT $sel ";
+				$sql.=" FROM po where id_user = '$session' $add_q";*/
+				$sql = $this->db->get('B003');
+				$totalData = $sql->num_rows();
+				$totalFiltered = $totalData;  
+				if( $requestData['search']['value'] ) {
+					$sqlQuery.="AND KODE_BARCODE LIKE '%".$requestData['search']['value']."%' OR NAMA_JNS LIKE '%".$requestData['search']['value']."%' ORDER BY ".$columns[$requestData['order'][0]['column']]." ".$requestData['order'][0]['dir']."";
+				$sql=$this->db->query($sqlQuery);
+				$totalFiltered = $sql->num_rows(); 
+			    $res=$sql->result_array();
+			} else { 
+			$sqlQuery.=" ORDER BY ".$columns[$requestData['order'][0]['column']]." ".$requestData['order'][0]['dir']."";	
+				$sql=$this->db->query($sqlQuery);
+				$res=$sql->result_array();
+			}
+
+			$data = [];
+			foreach( $res as $k=>$row) {
+				$idx =  $row["KODE_BARCODE"];
+				$nestedData=array(); 
+				$nestedData[] = $dataOptions[$row["KODE_JU"]];
+				$nestedData[] = $dataOptions2[$row["KODE_SJ"]];
+				$nestedData[] = $dataOptions4[$row["KODE_SPL"]];
+				$nestedData[] = $dataOptions3[$row["KODE_SZ"]];
+				$nestedData[] = $dataOptions5[$row["KODE_JNS"]];
+				$nestedData[] = $row["KODE_BARCODE"];
+				$nestedData[] = $row["NAMA_JNS"];
+				$nestedData[] = $row["HJUAL_PCS"];
+				
+				$nestedData[] = '<button class="btn btn-success brg" value="'.$idx.'" id="id-'.$idx.'" onclick="tambah('.$idx.')" data-dismiss="modal"><span class="glyphicon glyphicon-pencil"></span></button>';
+				
+				$data[] = $nestedData;
+			}
+			$json_data = array(
+						"draw"            => intval( $requestData['draw'] ),
+						"recordsTotal"    => intval( $totalData ),
+						"recordsFiltered" => intval( $totalFiltered ),
+						"data"            => $data
 						);
 
 			echo json_encode($json_data);

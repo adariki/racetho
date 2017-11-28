@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Data Tables</title>
+  <title>Rumah Batik In-Tyas || <?= $title?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="<?= base_url()?>assets/bower_components/font-awesome/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="<?= base_url()?>assets/bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="<?= base_url()?>assets/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="<?= base_url()?>assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
   <!-- Theme style -->
@@ -367,10 +368,26 @@
 <script src="<?= base_url()?>assets/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<?= base_url()?>assets/dist/js/demo.js"></script>
+<script src="<?= base_url()?>assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- page script -->
 <script>
+/* $("#id-10101110001").click(function() {
+            alert("zzzz");
+        });*/
+
+    $(function() {
+        $( ".datepicker" ).datepicker({ dateFormat: "yyyy-mm-dd" });
+    }); 
+    $("#jum_barang").keyup(function(){
+        var hrg = parseInt($("#hrg_barang").val());
+        var jum = parseInt($("#jum_barang").val());
+        var tot = hrg * jum;
+        $("#tot_barang").val(tot);
+    })
+
+        document.getElementById("tot_barang").value=parseInt(document.getElementById("hrg_barang").value) * parseInt(document.getElementById("jum_barang").value);
   $(function () {
-    $('#example1').DataTable( {
+    var tab1 = $('#example1').DataTable( {
             'processing': true,
             'serverSide': true,
             'ajax': {
@@ -378,7 +395,53 @@
             'type': 'POST'
                 },
             } );
+    var tab2 =$('#example2').DataTable( {
+            'processing': true,
+            'serverSide': true,
+            'ajax': {
+            'url': '<?php echo base_url()?>index.php/<?php echo $this->uri->segment(1);?>/getdataPop/',
+            'type': 'POST'
+                },
+            } );
+
+    $("#submid").click(function(){
+        $.post("<?= base_url()?>index.php/Pembelian/add",{
+          notrans:$("#notrans").val(),jenis_umum:$("#jenis_umum").val(),sub_jenis:$("#sub_jenis").val(),
+          size:$("#size").val(),jenis:$("#jenis").val(),kode_barcode:$("#kode_barcode").val(),nama_barang:$("nama_barang").val(),jum_barang:$("#jum_barang").val(),hrg_barang:$("#hrg_barang").val(),tot_barang:$("#tot_barang").val()
+        }).done(function(data){
+          tab1.ajax.reload();
+        });
+    });
+  
+
+  $("#submid2").click(function(){
+        $.post("<?= base_url()?>index.php/Pembelian/addPembayaran",{
+            notrans:$("#notrans").val(),
+            tot_barang:$("#tot_barang").val(),
+            tunai:$("#tunai").val(),
+            non_tunai:$("#non_tunai").val(),
+            hutang:$("#hutang").val(),
+            bilyet_giro:$("#bilyet_giro").val(),
+            rek_an:$("#rek_an").val(),
+            no_rek:$("#no_rek").val(),
+            rek_an2:$("#rek_an2").val(),
+            no_rek2:$("#no_rek2").val(),
+            no_giro:$("#no_giro").val(),
+            tgl_bg:$("#tgl_bg").val(),
+            tgl_jt:$("#tgl_jt").val(),
+            kode_hutang:$("#kode_hutang").val(),
+            no_hutang:$("#no_hutang").val(),
+            tgl_mulai:$("#tgl_mulai").val(),
+            tgl_jatuh:$("#tgl_jatuh").val(),
+            nominal:$("#nominal").val(),
+            syarat:$("#syarat").val(),
+        }).done(function(data){
+          tab1.ajax.reload();
+        });
+    });
   });
+
+
 
 $("#KODE_JNS").change(function(){
   $.post( "<?= base_url() ?>index.php/Barang/generateBarcode", { jenis_umum: $("#KODE_JU").val(),
@@ -389,6 +452,71 @@ $("#KODE_JNS").change(function(){
 });
 
 $(document).ready(function() {
+    var jumlah_byr = 0;
+
+     $.get("<?= base_url()?>index.php/Pembelian/jumHarga/"+$('#notrans').val(),function(data){
+          $("#tot_bayar").val(data);
+      });
+     $("#tunai").keyup(function(){
+          jumlah_byr = parseInt($("#tunai").val()) + parseInt($("#non_tunai").val()) + parseInt($("#bilyet_giro").val()) + parseInt($("#hutang").val());
+          $("#tot_pemb").val(jumlah_byr);
+     });
+     $("#non_tunai").keyup(function(){
+          if($("#non_tunai").val()>0){
+            $("#nontunai").show();
+          }else{
+            $("#nontunai").hide();
+          }
+          jumlah_byr = parseInt($("#tunai").val()) + parseInt($("#non_tunai").val()) + parseInt($("#bilyet_giro").val()) + parseInt($("#hutang").val());
+          $("#tot_pemb").val(jumlah_byr);
+     });
+     $("#hutang").keyup(function(){
+          if($("#hutang").val()>0){
+            $("#hutang_form").show();
+          }else{
+            $("#hutang_form").hide();
+          }
+          $("#nominal").val($("#hutang").val());
+          jumlah_byr = parseInt($("#tunai").val()) + parseInt($("#non_tunai").val()) + parseInt($("#bilyet_giro").val()) + parseInt($("#hutang").val());
+          $("#tot_pemb").val(jumlah_byr);
+     });
+     $("#bilyet_giro").keyup(function(){
+          if($("#bilyet_giro").val()>0){
+            $("#bilyetgiro").show();
+          }else{
+            $("#bilyetgiro").hide();
+          }
+          jumlah_byr = parseInt($("#tunai").val()) + parseInt($("#non_tunai").val()) + parseInt($("#bilyet_giro").val()) + parseInt($("#hutang").val());
+          $("#tot_pemb").val(jumlah_byr);
+     });
+        
+
+
+  /*function tambah(id){
+        $.get("<?= base_url()?>index.php/Pembelian/tambahKode/"+id,function(data){
+            var obj=JSON.parse(data);
+            $("#nama_barang").val(obj.NAMA_JNS);
+            $("#hrg_barang").val(obj.HJUAL_PCS);
+            $("#jum_barang").val(1);
+      });
+    }*/
+   
+  /*$(".brg").each(function(index){
+      $(this).on("click",function(){
+          alert('xsad');
+      })
+  });*/
+
+      $.get("<?= base_url()?>index.php/Pembelian/selectHutang",function(data){
+          var htmls = "";
+          var obj=JSON.parse(data);
+          for(i=0;i<obj.length;i++){
+            htmls+="<option value="+obj[i].KODE_HUTANG+">"+obj[i].NAMA+"</option>";
+          }
+          $("#kode_hutang").html(htmls);
+      })
+
+
   $.get("<?= base_url()?>index.php/Pembelian/selectJu",function(data){
       var htmls = "";
       var obj=JSON.parse(data);
@@ -416,6 +544,15 @@ $(document).ready(function() {
       $("#size").html(htmls);
 
     });
+  $.get("<?= base_url()?>index.php/Pembelian/selectBank",function(data){
+      var htmls = "";
+      var obj=JSON.parse(data);
+      for(i=0;i<obj.length;i++){
+        htmls+="<option value="+obj[i].KODE_SZ+">"+obj[i].KETERANGAN+"</option>";
+      }
+      $("#size").html(htmls);
+
+    });
   $.get("<?= base_url()?>index.php/Pembelian/selectJenis",function(data){
       var htmls = "";
       var obj=JSON.parse(data);
@@ -423,6 +560,16 @@ $(document).ready(function() {
         htmls+="<option value="+obj[i].KODE_JNS+">"+obj[i].KETERANGAN+"</option>";
       }
       $("#jenis").html(htmls);
+
+    });
+  $.get("<?= base_url()?>index.php/Pembelian/selectBank",function(data){
+      var htmls = "";
+      var obj=JSON.parse(data);
+      for(i=0;i<obj.length;i++){
+        htmls+="<option value="+obj[i].ID+">"+obj[i].NAMA+"</option>";
+      }
+      $("#rek_an").html(htmls);
+      $("#rek_an2").html(htmls);
 
     });
   $("#jenis").change(function(){
@@ -442,6 +589,19 @@ $(document).ready(function() {
           
           });
     });
+
+    /*$("#kode_barcode").change(function(){
+        $.get("<?= base_url()?>index.php/Pembelian/selectKodeBarcode/"+$("#kode_barcode").val(),function(data){
+            var obj=JSON.parse(data);
+            $("#nama_barang").val(obj.NAMA_JNS);
+            $("#hrg_barang").val(obj.HJUAL_PCS);
+            $("#nama_barang").val(obj.NAMA_JNS);
+            $("#nama_barang").val(1);
+
+      });
+    });*/
+
+    
   });
 
 </script>

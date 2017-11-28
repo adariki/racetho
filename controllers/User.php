@@ -30,7 +30,7 @@ class User extends CI_Controller {
 	public function proses(){
 		$query = $this->Usermodel->loginProcess();
 		if($query){
-			$this->session->set_userdata(['username'=>$query->UserCode,'sts'=>1]);
+			$this->session->set_userdata(['username'=>$query->UserCode,'kodeuser'=>$query->NoUrut]);
 			redirect('Home');
 		}else{
 			$this->session->set_flashdata('error_message','Username/Password Salah');
